@@ -5,13 +5,19 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import seedu.address.model.AddressBook;
+import seedu.address.model.ProjectList;
 import seedu.address.model.ReadOnlyAddressBook;
+import seedu.address.model.ReadOnlyProjectList;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.project.Description;
+import seedu.address.model.project.Title;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.project.Project;
+
 
 /**
  * Contains utility methods for populating {@code AddressBook} with sample data.
@@ -57,4 +63,18 @@ public class SampleDataUtil {
                 .collect(Collectors.toSet());
     }
 
+    public static Project[] getSampleProjects() {
+        return new Project[] {
+                new Project(new Title("CS2103T"), new Description("The mod that takes most time")),
+                new Project(new Title("GER1000"), new Description("Free and easy"))
+        };
+    }
+
+    public static ReadOnlyProjectList getSampleProjectList() {
+        ProjectList samplePl = new ProjectList();
+        for (Project project : getSampleProjects()) {
+            samplePl.addProject(project);
+        }
+        return samplePl;
+    }
 }
