@@ -181,7 +181,7 @@ public class ModelManager implements Model {
         projectList.setProject(target, editedProject);
     }
 
-    //=========== Filtered Person List Accessors =============================================================
+    //=========== Filtered Project List Accessors =============================================================
 
     /**
      * Returns an unmodifiable view of the list of {@code Person} backed by the internal list of

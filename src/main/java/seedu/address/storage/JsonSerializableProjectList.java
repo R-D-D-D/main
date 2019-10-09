@@ -27,7 +27,7 @@ class JsonSerializableProjectList {
      * Constructs a {@code JsonSerializableProjectList} with the given projects.
      */
     @JsonCreator
-    public JsonSerializableProjectList(@JsonProperty("persons") List<JsonAdaptedProject> projects) {
+    public JsonSerializableProjectList(@JsonProperty("projects") List<JsonAdaptedProject> projects) {
         this.projects.addAll(projects);
     }
 
