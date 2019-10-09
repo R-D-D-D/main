@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
@@ -26,6 +27,9 @@ public class ModelManager implements Model {
     private final ProjectList projectList;
     private final FilteredList<Project> filteredProjects;
 
+    // this is the current branch
+    private Project workingProject;
+
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
      */
@@ -46,6 +50,25 @@ public class ModelManager implements Model {
         this(new AddressBook(), new UserPrefs(), new ProjectList());
     }
 
+    /**
+     * Mimic a git checkout action. What it does is simply assign the project as the working
+     * project.
+     * @param project
+     */
+    public void setWorkingProject(Project project) {
+        this.workingProject = project;
+    }
+
+    /**
+     * @return An Optional object containing the working project.
+     */
+    public Optional<Project> getWorkingProject() {
+        if (workingProject == null) {
+            return Optional.empty();
+        } else {
+            return Optional.of(workingProject);
+        }
+    }
     //=========== UserPrefs ==================================================================================
 
     @Override

@@ -1,6 +1,7 @@
 package seedu.address.model;
 
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
@@ -15,6 +16,16 @@ public interface Model {
     /** {@code Predicate} that always evaluate to true */
     Predicate<Person> PREDICATE_SHOW_ALL_PERSONS = unused -> true;
     Predicate<Project> PREDICATE_SHOW_ALL_PROJECTS = unused -> true;
+
+    /**
+     * Set the current project.
+     */
+    void setWorkingProject(Project project);
+
+    /**
+     * Get the current working project.
+     */
+    Optional<Project> getWorkingProject();
 
     /**
      * Replaces user prefs data with the data in {@code userPrefs}.
