@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.model.finance.Finance;
 import seedu.address.model.project.Project;
 import seedu.address.model.project.Description;
 import seedu.address.model.project.Title;
@@ -17,14 +18,16 @@ class JsonAdaptedProject {
 
     private final String title;
     private final String description;
+    private final JsonAdaptedFinance finance;
 
     /**
      * Constructs a {@code JsonAdaptedProject} with the given project details.
      */
     @JsonCreator
-    public JsonAdaptedProject(@JsonProperty("title") String title, @JsonProperty("phone") String description) {
+    public JsonAdaptedProject(@JsonProperty("title") String title, @JsonProperty("description") String description, @JsonProperty("finance") JsonAdaptedFinance finance) {
         this.title = title;
         this.description = description;
+        this.finance = finance;
     }
 
     /**
@@ -33,6 +36,7 @@ class JsonAdaptedProject {
     public JsonAdaptedProject(Project source) {
         title = source.getTitle().title;
         description = source.getDescription().description;
+        finance = new JsonAdaptedFinance(source.getFinance());
     }
 
     /**
@@ -50,7 +54,8 @@ class JsonAdaptedProject {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Description.class.getSimpleName()));
         }
         final Description modelDescription = new Description(description);
-        return new Project(modelTitle, modelDescription);
+        final Finance modelFinance = finance.toModelType();
+        return new Project(modelTitle, modelDescription, modelFinance);
     }
 
 }

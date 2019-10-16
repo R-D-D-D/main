@@ -8,6 +8,7 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.ProjectList;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyProjectList;
+import seedu.address.model.finance.Finance;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
@@ -65,8 +66,8 @@ public class SampleDataUtil {
 
     public static Project[] getSampleProjects() {
         return new Project[] {
-            new Project(new Title("CS2103T"), new Description("The mod that takes most time")),
-            new Project(new Title("GER1000"), new Description("Free and easy"))
+            new Project(new Title("CS2103T"), new Description("The mod that takes most time"), new Finance()),
+            new Project(new Title("GER1000"), new Description("Free and easy"), new Finance())
         };
     }
 

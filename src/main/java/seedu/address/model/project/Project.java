@@ -1,5 +1,7 @@
 package seedu.address.model.project;
 
+import seedu.address.model.finance.Finance;
+
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 /**
@@ -11,11 +13,13 @@ public class Project {
     // Identity fields
     private final Title title;
     private final Description description;
+    private final Finance finance;
 
-    public Project(Title name, Description description) {
+    public Project(Title name, Description description, Finance finance) {
         requireAllNonNull(name, description);
         this.description = description;
         this.title = name;
+        this.finance = finance;
     }
 
     public Title getTitle() {
@@ -26,8 +30,17 @@ public class Project {
         return description;
     }
 
+    public Finance getFinance() {
+        return finance;
+    }
+
     public boolean isSameProject(Project project) {
         return this.title.equals(project.getTitle().title);
+    }
+
+    public Project clone() {
+        Project project = new Project(title, description, finance);
+        return project;
     }
 
     @Override
