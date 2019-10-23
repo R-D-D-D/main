@@ -1,20 +1,9 @@
 package seedu.address.logic.parser;
 
-import static java.util.Objects.requireNonNull;
-import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-
-import java.time.DayOfWeek;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
-
 import seedu.address.model.finance.Budget;
 import seedu.address.model.finance.Spending;
 import seedu.address.model.person.Address;
@@ -30,7 +19,13 @@ import seedu.address.model.timetable.TimeRange;
 import java.util.List;
 import java.util.Date;
 import java.util.ArrayList;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
+import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
 import static seedu.address.model.finance.Spending.DATE_FORMAT;
 
@@ -165,7 +160,6 @@ public class ParserUtil {
         }
         return new Email(trimmedEmail);
     }
-
 
     /**
      * Parses a {@code String tag} into a {@code Tag}.

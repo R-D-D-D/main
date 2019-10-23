@@ -9,7 +9,7 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.ProjectList;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyProjectList;
-import seedu.address.model.person.*;
+
 import seedu.address.model.project.*;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.finance.Finance;
@@ -18,16 +18,11 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
-import seedu.address.model.project.Description;
-import seedu.address.model.project.Project;
-import seedu.address.model.project.Title;
 
 /**
  * Contains utility methods for populating {@code AddressBook} with sample data.
  */
 public class SampleDataUtil {
-
-    public static final Remark EMPTY_REMARK = new Remark("");
 
     public static Person[] getSamplePersons() {
 
