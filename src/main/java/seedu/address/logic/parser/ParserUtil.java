@@ -1,5 +1,13 @@
 package seedu.address.logic.parser;
 
+import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+
+import java.time.DayOfWeek;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.StringUtil;
@@ -19,13 +27,7 @@ import seedu.address.model.timetable.TimeRange;
 import java.util.List;
 import java.util.Date;
 import java.util.ArrayList;
-import java.time.DayOfWeek;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
-
-import static java.util.Objects.requireNonNull;
-import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import seedu.address.model.timetable.TimeTable;
 
 import static seedu.address.model.finance.Spending.DATE_FORMAT;
 
@@ -237,6 +239,22 @@ public class ParserUtil {
             budgetSet.add(parseBudget(strs[i], strs[i + 1]));
         }
         return budgetSet;
+    }
+
+    /**
+     *
+     */
+    public static TimeTable parseTimeTable(String timeTableString) throws ParseException {
+        String[] splitted = timeTableString.split("\n");
+        List<TimeRange> timeRanges = new ArrayList<>();
+        for (String s : splitted) {
+            timeRanges.add(parseTimeRange(s));
+        }
+        try {
+            return new TimeTable(timeRanges);
+        } catch (IllegalValueException e) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, TimeRange.MESSAGE_CONSTRAINTS));
+        }
     }
 
     /**
