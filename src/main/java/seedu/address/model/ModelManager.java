@@ -76,10 +76,6 @@ public class ModelManager implements Model {
     public boolean isCheckedOut() {
         return workingProject.isPresent();
     }
-
-    public String checkoutConstrain() {
-        return "Please checkout to a project before proceeding";
-    }
     //=========== UserPrefs ==================================================================================
 
     @Override

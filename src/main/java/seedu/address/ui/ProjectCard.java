@@ -36,16 +36,6 @@ public class ProjectCard extends UiPart<Region> {
     private Label title;
     @FXML
     private Label description;
-    @FXML
-    private Label memberTitle;
-    @FXML
-    private FlowPane members;
-    @FXML
-    private Label taskTitle;
-    @FXML
-    private FlowPane tasks;
-    @FXML
-    private FlowPane meetings;
 
     public ProjectCard(Project project, int displayedIndex) {
         super(FXML);
@@ -54,18 +44,6 @@ public class ProjectCard extends UiPart<Region> {
         id.setText(displayedIndex + ". ");
         title.setText(project.getTitle().title);
         description.setText(project.getDescription().description);
-        memberTitle.setText("Members:");
-        project.getMembers().forEach(member -> members.getChildren().add(new Label(member)));
-
-        for (Task task : project.getTasks()) {
-            tasks.getChildren().add(new Label("    " + ++count + ". " + task.toString()));
-        }
-        taskTitle.setText("Tasks: ");
-        tasks.setOrientation(Orientation.VERTICAL);
-        tasks.setPrefWrapLength(100);
-        project.getListOfMeeting().stream()
-                .sorted(Comparator.comparing(m -> m.getTime().getDate()))
-                .forEach(meeting -> meetings.getChildren().add(new Label(meeting.getDescription().description + " " + meeting.getTime().time)));
     }
 
     @Override

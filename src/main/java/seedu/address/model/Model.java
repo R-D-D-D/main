@@ -52,11 +52,6 @@ public interface Model {
      */
     boolean isCheckedOut();
 
-    /**
-     * Give an error message to prompt the user to checkout to a project.
-     */
-    String checkoutConstrain();
-
     //=========== AddressBook ================================================================================
     /**
      * Returns the user prefs' address book file path.

@@ -3,6 +3,7 @@ package seedu.address.logic.parser;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
+import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -216,11 +217,11 @@ public class ParserUtil {
         requireNonNull(name, number);
         String trimmedName = name.trim();
         String trimmedNumber = number.trim();
-        Double doubleNumber;
+        BigDecimal doubleNumber;
         if (!Budget.isValidAmount(trimmedNumber)) {
             throw new ParseException(Budget.MESSAGE_CONSTRAINTS);
         }
-        doubleNumber = Double.valueOf(trimmedNumber);
+        doubleNumber = new BigDecimal(trimmedNumber);
         List<Spending> spendings = new ArrayList<>();
         return new Budget(trimmedName, doubleNumber, spendings);
     }
@@ -283,11 +284,11 @@ public class ParserUtil {
      *
      * @throws ParseException if the given {@code spending} is invalid.
      */
-    public static Double parseSpending(String spending) throws ParseException {
+    public static BigDecimal parseSpending(String spending) throws ParseException {
         String trimmedSpending = spending.trim();
         if (!Spending.isValidAmount(trimmedSpending)) {
             throw new ParseException(Spending.MESSAGE_CONSTRAINTS);
         }
-        return Double.valueOf(spending);
+        return new BigDecimal(spending);
     }
 }

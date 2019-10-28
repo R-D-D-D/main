@@ -15,6 +15,8 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.Logic;
 import seedu.address.logic.commands.*;
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.model.util.SampleDataUtil;
+
 import java.util.logging.Logger;
 
 /**
@@ -35,7 +37,9 @@ public class MainWindow extends UiPart<Stage> {
 
     // Independent Ui parts residing in this Ui container
     private PersonListPanel personListPanel;
+    private BudgetListPanel budgetListPanel;
     private ProjectListPanel projectListPanel;
+    private ProjectOverview projectOverview;
     private ResultDisplay resultDisplay;
     private HelpWindow helpWindow;
 
@@ -49,16 +53,19 @@ public class MainWindow extends UiPart<Stage> {
     private VBox projectList;
 
     @FXML
+    private VBox budgetList;
+
+    @FXML
     private StackPane personListPanelPlaceholder;
+
+    @FXML
+    private StackPane budgetListPanelPlaceholder;
 
     @FXML
     private StackPane resultDisplayPlaceholder;
 
     @FXML
     private StackPane projectListPanelPlaceholder;
-
-    @FXML
-    private StackPane projectDisplayPlaceholder;
 
     @FXML
     private StackPane statusbarPlaceholder;
@@ -190,9 +197,7 @@ public class MainWindow extends UiPart<Stage> {
             String commandWord = commandResult.getCommandWord();
             State nextState = stateOf(commandWord);
 
-            if (!nextState.equals(currentState)) {
-                changeUiDisplay(nextState);
-            }
+            changeUiDisplay(nextState);
 
             if (commandResult.isShowHelp()) {
                 handleHelp();
@@ -213,7 +218,9 @@ public class MainWindow extends UiPart<Stage> {
 
     private enum State {
         ADDRESS_BOOK,
-        PROJECT_LIST
+        PROJECT_LIST,
+        PROJECT_OVERVIEW,
+        PROJECT_FINANCE
     }
 
     private void changeUiDisplay(State nextState) {
@@ -226,7 +233,19 @@ public class MainWindow extends UiPart<Stage> {
 
         case PROJECT_LIST:
             projectListPanel = new ProjectListPanel(logic.getFilteredProjectList());
-            projectListPanelPlaceholder.getChildren().add(projectListPanel.getRoot());
+            projectListPanelPlaceholder.getChildren().setAll(projectListPanel.getRoot());
+            currentState = nextState;
+            break;
+
+        case PROJECT_OVERVIEW:
+            projectOverview = new ProjectOverview(logic.getFilteredProjectList(), logic.getWorkingProject().get());
+            projectListPanelPlaceholder.getChildren().setAll(projectOverview.getRoot());
+            currentState = nextState;
+            break;
+
+        case PROJECT_FINANCE:
+            budgetListPanel = new BudgetListPanel(logic.getWorkingProject().get().getFinance().getBudgetObservableList());
+            projectListPanelPlaceholder.getChildren().setAll(budgetListPanel.getRoot());
             currentState = nextState;
             break;
 
@@ -238,13 +257,18 @@ public class MainWindow extends UiPart<Stage> {
     private State stateOf(String commandWord) {
         State state = State.PROJECT_LIST;
         switch (commandWord) {
+        case AddProjectCommand.COMMAND_WORD:
+
+        case RemoveMemberCommand.COMMAND_WORD:
+            state = State.PROJECT_LIST;
+            break;
+
         case AddBudgetCommand.COMMAND_WORD:
+            state = State.PROJECT_OVERVIEW;
 
         case AddFromContactsCommand.COMMAND_WORD:
 
         case AddMemberCommand.COMMAND_WORD:
-
-        case AddProjectCommand.COMMAND_WORD:
 
         case AddProjectMeetingCommand.COMMAND_WORD:
 
@@ -252,18 +276,19 @@ public class MainWindow extends UiPart<Stage> {
 
         case AddTaskCommand.COMMAND_WORD:
 
+        case GenerateSlotCommand.COMMAND_WORD:
+
         case CheckoutCommand.COMMAND_WORD:
 
         case DeleteTaskCommand.COMMAND_WORD:
+            state = State.PROJECT_OVERVIEW;
+            break;
 
         case ExitCommand.COMMAND_WORD:
-
-        case GenerateSlotCommand.COMMAND_WORD:
+            break;
 
         case ListBudgetCommand.COMMAND_WORD:
-
-        case RemoveMemberCommand.COMMAND_WORD:
-            state = State.PROJECT_LIST;
+            state = State.PROJECT_FINANCE;
             break;
 
         case AddCommand.COMMAND_WORD:

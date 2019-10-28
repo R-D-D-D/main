@@ -90,7 +90,6 @@ public class Project {
         return members.contains(person.getName().fullName);
     }
 
-
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();

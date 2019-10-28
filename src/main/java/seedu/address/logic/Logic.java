@@ -1,6 +1,7 @@
 package seedu.address.logic;
 
 import java.nio.file.Path;
+import java.util.Optional;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
@@ -57,6 +58,11 @@ public interface Logic {
      * Returns the user prefs' project list file path.
      */
     Path getProjectListFilePath();
+
+    /**
+     * Returns an Optional<Project> which is the current working project
+     */
+    Optional<Project> getWorkingProject();
 
     //======== GUI =======================================================================
 
