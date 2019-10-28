@@ -15,7 +15,6 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.Logic;
 import seedu.address.logic.commands.*;
 import seedu.address.logic.commands.exceptions.CommandException;
-import seedu.address.model.util.SampleDataUtil;
 
 import java.util.logging.Logger;
 
@@ -264,7 +263,6 @@ public class MainWindow extends UiPart<Stage> {
             break;
 
         case AddBudgetCommand.COMMAND_WORD:
-            state = State.PROJECT_OVERVIEW;
 
         case AddFromContactsCommand.COMMAND_WORD:
 

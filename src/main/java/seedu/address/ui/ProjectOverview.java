@@ -11,14 +11,12 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import seedu.address.model.finance.Budget;
 import seedu.address.model.project.Project;
 import seedu.address.model.project.Task;
 
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 

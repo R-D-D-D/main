@@ -20,9 +20,6 @@ import seedu.address.model.project.Project;
 import seedu.address.storage.Storage;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.logging.Logger;
 
 /**
  * The main LogicManager of the app.

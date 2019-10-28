@@ -1,16 +1,12 @@
 package seedu.address.ui;
 
 import javafx.fxml.FXML;
-import javafx.geometry.Orientation;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.address.model.project.Meeting;
 import seedu.address.model.project.Project;
-import seedu.address.model.util.SortingOrder;
-
-
 
 import java.util.ArrayList;
 import java.util.Comparator;
