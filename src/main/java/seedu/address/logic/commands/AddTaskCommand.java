@@ -4,13 +4,14 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.project.Project;
 import seedu.address.model.project.Task;
+import seedu.address.model.util.SortingOrder;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
+import java.util.*;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PROJECTS;
+import static seedu.address.commons.core.Messages.MESSAGE_NOT_CHECKED_OUT;
 
 
 /**
@@ -40,14 +41,18 @@ public class AddTaskCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
 
+        if (!model.isCheckedOut()) {
+            throw new CommandException(MESSAGE_NOT_CHECKED_OUT);
+        }
+
         Project projectToEdit = model.getWorkingProject().get();
-        List<String> members = projectToEdit.getMembers();
-        Set<Task> taskToEdit = projectToEdit.getTasks();
-        Set<Task> newTaskList = new HashSet<>();
-        newTaskList.addAll(taskToEdit);
-        newTaskList.add(task);
+        ArrayList<Task> taskArrayList = new ArrayList<>();
+        List<Task> taskToEdit = projectToEdit.getTasks();
+        taskArrayList.addAll(taskToEdit);
+        taskArrayList.add(task);
+        Collections.sort(taskArrayList, SortingOrder.getCurrentSortingOrderForTask());
         Project editedProject = new Project(projectToEdit.getTitle(), projectToEdit.getDescription(),
-                projectToEdit.getMembers(), newTaskList, projectToEdit.getFinance());
+                projectToEdit.getMemberNames(), taskArrayList, projectToEdit.getFinance());
 
         if (projectToEdit.hasTask(task)) {
             throw new CommandException(MESSAGE_DUPLICATE_TASK);

@@ -1,6 +1,7 @@
 package seedu.address.model.person;
 
 import seedu.address.model.tag.Tag;
+import seedu.address.model.timetable.TimeTable;
 
 import java.util.*;
 
@@ -16,22 +17,33 @@ public class Person {
     private final Name name;
     private final Phone phone;
     private final Email email;
+    private final ProfilePicture profilePicture;
 
     // Data fields
     private final Address address;
     private final Set<Tag> tags = new HashSet<>();
     private final List<String> projects = new ArrayList<>();
+    private final TimeTable timeTable;
 
     /**
-     * Every field must be present and not null.
+     * Every field must be present and not null, except for timeTable which can be null.
      */
-    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
+    public Person(Name name, Phone phone, Email email, ProfilePicture profilePicture, Address address, Set<Tag> tags, TimeTable timeTable) {
         requireAllNonNull(name, phone, email, address, tags);
         this.name = name;
         this.phone = phone;
         this.email = email;
+        this.profilePicture = profilePicture;
         this.address = address;
         this.tags.addAll(tags);
+        this.timeTable = timeTable;
+    }
+
+    /**
+     * Every field must be present and not null.
+     */
+    public Person(Name name, Phone phone, Email email, ProfilePicture profilePicture, Address address, Set<Tag> tags) {
+        this(name, phone, email, profilePicture, address, tags, new TimeTable(new ArrayList<>()));
     }
 
     public Name getName() {
@@ -44,6 +56,10 @@ public class Person {
 
     public Email getEmail() {
         return email;
+    }
+
+    public ProfilePicture getProfilePicture() {
+        return profilePicture;
     }
 
     public Address getAddress() {
@@ -60,6 +76,10 @@ public class Person {
 
     public List<String> getProjects() {
         return this.projects;
+    }
+
+    public TimeTable getTimeTable() {
+        return timeTable;
     }
 
     /**
@@ -79,6 +99,7 @@ public class Person {
     /**
      * Returns true if both persons have the same identity and data fields.
      * This defines a stronger notion of equality between two persons.
+     * Timetable field is not included in comparison of equality.
      */
     @Override
     public boolean equals(Object other) {
@@ -94,14 +115,17 @@ public class Person {
         return otherPerson.getName().equals(getName())
                 && otherPerson.getPhone().equals(getPhone())
                 && otherPerson.getEmail().equals(getEmail())
+                && otherPerson.getProfilePicture().equals(getProfilePicture())
                 && otherPerson.getAddress().equals(getAddress())
-                && otherPerson.getTags().equals(getTags());
+                && otherPerson.getTags().equals(getTags())
+                && ((this.getTimeTable() == null && otherPerson.getTimeTable() == null)
+                    || otherPerson.getTimeTable().equals(getTimeTable()));
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, address, tags);
+        return Objects.hash(name, phone, email, profilePicture, address, tags, timeTable);
     }
 
     @Override
@@ -117,6 +141,9 @@ public class Person {
                 .append(" Tags: ");
 
         getTags().forEach(builder::append);
+        builder.append(" TimeTable: ")
+                .append(getTimeTable());
+
         return builder.toString();
     }
 

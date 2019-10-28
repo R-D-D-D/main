@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.person.*;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.timetable.TimeRange;
+import seedu.address.model.timetable.TimeTable;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -23,26 +25,34 @@ class JsonAdaptedPerson {
     private final String name;
     private final String phone;
     private final String email;
+    private final String profilePicture;
     private final String address;
     private final List<JsonAdaptedTag> tagged = new ArrayList<>();
     private final List<String> projects = new ArrayList<>();
+    private final List<JsonAdaptedTimeRange> timetable = new ArrayList<>();
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
      */
     @JsonCreator
     public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
-                             @JsonProperty("email") String email, @JsonProperty("address") String address,
-                             @JsonProperty("tagged") List<JsonAdaptedTag> tagged, @JsonProperty("projects") List<String> projects) {
+                             @JsonProperty("email") String email, @JsonProperty("profilePicture") String profilePicture,
+                             @JsonProperty("address") String address, @JsonProperty("tagged") List<JsonAdaptedTag> tagged,
+                             @JsonProperty("projects") List<String> projects, @JsonProperty("timetable") List<JsonAdaptedTimeRange> timetable) {
+
         this.name = name;
         this.phone = phone;
         this.email = email;
+        this.profilePicture = profilePicture;
         this.address = address;
         if (tagged != null) {
             this.tagged.addAll(tagged);
         }
         if (projects != null) {
             this.projects.addAll(projects);
+        }
+        if (timetable != null) {
+            this.timetable.addAll(timetable);
         }
     }
 
@@ -53,12 +63,17 @@ class JsonAdaptedPerson {
         name = source.getName().fullName;
         phone = source.getPhone().value;
         email = source.getEmail().value;
+        profilePicture = source.getProfilePicture().value;
         address = source.getAddress().value;
         tagged.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
         projects.addAll(source.getProjects());
-
+        if (source.getTimeTable() != null) {
+            timetable.addAll(source.getTimeTable().getTimeRanges().stream()
+                    .map(JsonAdaptedTimeRange::new)
+                    .collect(Collectors.toList()));
+        }
     }
 
     /**
@@ -91,10 +106,16 @@ class JsonAdaptedPerson {
         if (email == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Email.class.getSimpleName()));
         }
+
         if (!Email.isValidEmail(email)) {
             throw new IllegalValueException(Email.MESSAGE_CONSTRAINTS);
         }
         final Email modelEmail = new Email(email);
+
+        if (!ProfilePicture.isValidFilePath(profilePicture)) {
+            throw new IllegalValueException(ProfilePicture.MESSAGE_CONSTRAINTS);
+        }
+        final ProfilePicture modelProfilePicture = new ProfilePicture(profilePicture);
 
         if (address == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Address.class.getSimpleName()));
@@ -108,8 +129,14 @@ class JsonAdaptedPerson {
 
         final List<String> modelProjectList = new ArrayList<>();
         modelProjectList.addAll(projects);
+        List<TimeRange> timeRanges = new ArrayList<>();
+        for (JsonAdaptedTimeRange timeRange : timetable) {
+            timeRanges.add(timeRange.toModelType());
+        }
+        final TimeTable timeTable = new TimeTable(timeRanges);
 
-        Person person = new Person(modelName, modelPhone, modelEmail, modelAddress, modelTags);
+        Person person = new Person(modelName, modelPhone, modelEmail, modelProfilePicture, modelAddress, modelTags, timeTable);
+
         person.getProjects().addAll(modelProjectList);
         return person;
     }

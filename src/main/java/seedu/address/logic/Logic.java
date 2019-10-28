@@ -2,7 +2,6 @@ package seedu.address.logic;
 
 import java.nio.file.Path;
 import java.util.Optional;
-
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.exceptions.IllegalValueException;
@@ -13,6 +12,8 @@ import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyProjectList;
 import seedu.address.model.person.Person;
 import seedu.address.model.project.Project;
+
+import java.io.File;
 
 /**
  * API of the Logic component
@@ -26,6 +27,8 @@ public interface Logic {
      * @throws ParseException If an error occurs during parsing.
      */
     CommandResult execute(String commandText) throws CommandException, ParseException, IllegalValueException;
+
+    CommandResult executeImageDrop(File imgFile, Person person) throws CommandException, ParseException, IllegalValueException;
 
     //======== AddressBook =======================================================================
     /**

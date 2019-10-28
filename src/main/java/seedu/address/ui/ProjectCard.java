@@ -6,10 +6,15 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import seedu.address.model.project.Meeting;
 import seedu.address.model.project.Project;
-import seedu.address.model.project.Task;
+import seedu.address.model.util.SortingOrder;
 
+
+
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * An UI component that displays information of a {@code Project}.
@@ -37,10 +42,14 @@ public class ProjectCard extends UiPart<Region> {
     @FXML
     private Label description;
 
+    @FXML
+    private Label meetingTitle;
+
+    private int count = 0;
+
     public ProjectCard(Project project, int displayedIndex) {
         super(FXML);
         this.project = project;
-        int count = 0;
         id.setText(displayedIndex + ". ");
         title.setText(project.getTitle().title);
         description.setText(project.getDescription().description);
@@ -62,5 +71,14 @@ public class ProjectCard extends UiPart<Region> {
         ProjectCard card = (ProjectCard) other;
         return id.getText().equals(card.id.getText())
                 && project.equals(card.project);
+    }
+
+    public void displayMeeting(FlowPane meetings, Project project) {
+        List<Meeting> listOfMeetings = new ArrayList<Meeting>(project.getListOfMeeting());
+        int meetingCount = 1;
+        listOfMeetings.sort(Comparator.comparing(m -> m.getTime().getDate()));
+        for (Meeting meeting: listOfMeetings) {
+            meetings.getChildren().add(new Label("    " + meetingCount++ + ". " + meeting.getDescription().description + " " + meeting.getTime().time));
+        }
     }
 }

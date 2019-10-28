@@ -27,10 +27,9 @@ public class AddMemberCommand extends Command {
             + PREFIX_NAME + "John Doe "
             + PREFIX_PHONE + "98765432 "
             + PREFIX_EMAIL + "johnd@example.com "
-            + PREFIX_ADDRESS + "311, Clementi Ave 2, #02-25 "
-            + PREFIX_TAG + "Co-Team Leader ";
+            + PREFIX_ADDRESS + "311, Clementi Ave 2, #02-25 ";
 
-    public static final String MESSAGE_SUCCESS = "New member added to %2$s project and address book: %1$s";
+    public static final String MESSAGE_SUCCESS = "New member added to %2$s";
     public static final String MESSAGE_SUCCESS_MISSING_FIELDS = MESSAGE_SUCCESS + " (Please remember to fill in remaining information for member)";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the project";
     public static final String MESSAGE_WRONG_ADD_COMMAND = "This person already exists in the address book, "
@@ -56,7 +55,7 @@ public class AddMemberCommand extends Command {
 
         Person personToAdd = createNewMember(toAdd);
         personToAdd.getProjects().add(projectToEditTitle);
-        List<String> memberListToEdit = projectToEdit.getMembers();
+        List<String> memberListToEdit = projectToEdit.getMemberNames();
         List<String> editedMemberList = new ArrayList<>();
 
         if (model.hasPerson(personToAdd)) {
@@ -89,6 +88,7 @@ public class AddMemberCommand extends Command {
         Name name = newMemberDescriptor.getName();
         Phone phone = newMemberDescriptor.getPhone();
         Email email = newMemberDescriptor.getEmail();
+        ProfilePicture profilePicture = newMemberDescriptor.getProfilePicture();
         Address address = newMemberDescriptor.getAddress();
         Set<Tag> tags;
         if (newMemberDescriptor.getTags().isEmpty()) {
@@ -97,13 +97,14 @@ public class AddMemberCommand extends Command {
             tags = newMemberDescriptor.getTags().get();
         }
 
-        return new Person(name, phone, email, address, tags);
+        return new Person(name, phone, email, profilePicture, address, tags);
     }
 
     public static class NewMemberDescriptor {
         private Name name;
         private Phone phone = new Phone("00000000");
         private Email email = new Email("no_email@added");
+        private ProfilePicture profilePicture = new ProfilePicture("");
         private Address address = new Address("-none-");
         private Set<Tag> tags;
 
@@ -113,6 +114,7 @@ public class AddMemberCommand extends Command {
             setName(toCopy.name);
             setPhone(toCopy.phone);
             setEmail(toCopy.email);
+            setProfilePicture(toCopy.profilePicture);
             setAddress(toCopy.address);
             setTags(toCopy.tags);
         }
@@ -146,6 +148,14 @@ public class AddMemberCommand extends Command {
 
         public Email getEmail() {
             return email;
+        }
+
+        public void setProfilePicture(ProfilePicture profilePicture) {
+            this.profilePicture = profilePicture;
+        }
+
+        public ProfilePicture getProfilePicture() {
+            return profilePicture;
         }
 
         public void setAddress(Address address) {
@@ -191,6 +201,7 @@ public class AddMemberCommand extends Command {
             return getName().equals(e.getName())
                     && getPhone().equals(e.getPhone())
                     && getEmail().equals(e.getEmail())
+                    && getProfilePicture().equals(e.getProfilePicture())
                     && getAddress().equals(e.getAddress())
                     && getTags().equals(e.getTags());
         }

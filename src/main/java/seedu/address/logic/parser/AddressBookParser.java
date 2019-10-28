@@ -2,6 +2,7 @@ package seedu.address.logic.parser;
 
 import seedu.address.logic.commands.*;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.logic.commands.LogOutCommand;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -42,6 +43,9 @@ public class AddressBookParser {
         case AddProjectMeetingCommand.COMMAND_WORD:
             return new AddProjectMeetingCommandParser().parse(arguments);
 
+        case AddProfilePictureCommand.COMMAND_WORD:
+            return new AddProfilePictureCommandParser().parse(arguments);
+
         case AddCommand.COMMAND_WORD:
             return new AddCommandParser().parse(arguments);
 
@@ -59,6 +63,9 @@ public class AddressBookParser {
 
         case EditCommand.COMMAND_WORD:
             return new EditCommandParser().parse(arguments);
+
+        case EditTaskCommand.COMMAND_WORD:
+            return new EditTaskParser().parse(arguments);
 
         case DeleteCommand.COMMAND_WORD:
             return new DeleteCommandParser().parse(arguments);
@@ -95,6 +102,24 @@ public class AddressBookParser {
 
         case GenerateSlotCommand.COMMAND_WORD:
             return new GenerateSlotCommandParser().parse(arguments);
+
+        case SendMailCommand.COMMAND_WORD:
+            return new SendMailCommandParser().parse(arguments);
+
+        case BroadcastMailCommand.COMMAND_WORD:
+            return new BroadcastMailCommandParser().parse(arguments);
+
+        case SignInCommand.COMMAND_WORD:
+            return new SignInCommandParser().parse(arguments);
+
+        case LogOutCommand.COMMAND_WORD:
+            return new LogOutCommandParser().parse(arguments);
+
+        case SortTaskCommand.COMMAND_WORD:
+            return new SortTaskParser().parse(arguments);
+            
+        case AddTimetableCommand.COMMAND_WORD:
+            return new AddTimetableCommandParser().parse(arguments);
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);

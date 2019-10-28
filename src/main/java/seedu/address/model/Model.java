@@ -6,6 +6,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.project.Project;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -51,6 +52,11 @@ public interface Model {
      * Checks if the user performed checkout command before.
      */
     boolean isCheckedOut();
+
+    /**
+     * Get list of members in current checked out project.
+     */
+    List<Person> getMembers();
 
     //=========== AddressBook ================================================================================
     /**
@@ -103,6 +109,29 @@ public interface Model {
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredPersonList(Predicate<Person> predicate);
+
+    //=========== Email Account for Owner of application ======================================================
+
+    /**
+     * Checks whether User has signed in using his Email Account
+     */
+    boolean isSignedIn();
+
+    /**
+     * Lets user signs in with the given Account.
+     */
+    void signIn(OwnerAccount ownerAccount) throws Exception;
+
+    /**
+     * Returns user's Email Account
+     */
+    OwnerAccount getOwnerAccount();
+
+    /**
+     * Signs out of the Account
+     */
+    void logOut();
+
 
     //=========== Project list ================================================================================
     /**

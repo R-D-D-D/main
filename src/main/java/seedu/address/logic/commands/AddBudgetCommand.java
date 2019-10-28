@@ -49,7 +49,7 @@ public class AddBudgetCommand extends Command {
         }
 
         Project editedProject = new Project(currWorkingProject.getTitle(), //title
-                currWorkingProject.getDescription(), currWorkingProject.getMembers(), //description + members
+                currWorkingProject.getDescription(), currWorkingProject.getMemberNames(), //description + members
                 currWorkingProject.getTasks(), new Finance(currWorkingProject.getFinance().getBudgets())); //tasks and budget
 
         model.setWorkingProject(editedProject);
