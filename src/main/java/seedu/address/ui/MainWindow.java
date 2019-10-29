@@ -291,6 +291,8 @@ public class MainWindow extends UiPart<Stage> {
             state = State.PROJECT_LIST;
             break;
 
+        case GenerateSlotCommand.COMMAND_WORD:
+
         case CheckoutCommand.COMMAND_WORD:
             state = State.PROJECT_OVERVIEW;
             break;

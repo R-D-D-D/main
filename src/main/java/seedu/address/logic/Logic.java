@@ -76,6 +76,7 @@ public interface Logic {
      * Sets the working project.
      */
     void setWorkingProject(Project project);
+
     //======== GUI =======================================================================
 
     /**
