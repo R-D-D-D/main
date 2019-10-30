@@ -16,7 +16,6 @@ import seedu.address.logic.Logic;
 import seedu.address.logic.UiEvent;
 import seedu.address.logic.commands.*;
 import seedu.address.logic.commands.exceptions.CommandException;
-
 import static seedu.address.logic.commands.CheckoutCommand.MESSAGE_CHECKOUT_SUCCESS;
 
 import java.util.Optional;
