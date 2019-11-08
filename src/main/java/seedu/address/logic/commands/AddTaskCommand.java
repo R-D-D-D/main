@@ -20,10 +20,10 @@ import static seedu.address.commons.core.Messages.MESSAGE_NOT_CHECKED_OUT;
 public class AddTaskCommand extends Command {
     public static final String COMMAND_WORD = "addTask";
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds this task to the current project "
-            + "s/ [DESCRIPTION] c/ [TIME in the form dd/MM/yyyy hhmm]\n"
+            + "s/[DESCRIPTION] c/[TIME in the form dd/MM/yyyy hhmm]\n"
             + "Example: " + COMMAND_WORD
-            + " s/ Finish GUI"
-            + " c/ 05/09/2019 1600";
+            + " s/Finish GUI"
+            + " c/05/09/2019 1600";
 
 
     public static final String MESSAGE_ADD_TASK_SUCCESS = "Added Task: %1$s to current project.";
@@ -52,7 +52,8 @@ public class AddTaskCommand extends Command {
         taskArrayList.add(task);
         Collections.sort(taskArrayList, SortingOrder.getCurrentSortingOrderForTask());
         Project editedProject = new Project(projectToEdit.getTitle(), projectToEdit.getDescription(),
-                projectToEdit.getMemberNames(), taskArrayList, projectToEdit.getFinance());
+                projectToEdit.getMemberNames(), taskArrayList, projectToEdit.getFinance(), projectToEdit.getGeneratedTimetable());
+        editedProject.setListOfMeeting(projectToEdit.getListOfMeeting());
 
         if (projectToEdit.hasTask(task)) {
             throw new CommandException(MESSAGE_DUPLICATE_TASK);

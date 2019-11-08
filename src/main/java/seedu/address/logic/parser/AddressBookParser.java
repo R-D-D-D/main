@@ -61,6 +61,9 @@ public class AddressBookParser {
         case AddSpendingCommand.COMMAND_WORD:
             return new AddSpendingCommandParser().parse(arguments);
 
+        case AssignTaskCommand.COMMAND_WORD:
+            return new AssignTaskCommandParser().parse(arguments);
+
         case BackCommand.COMMAND_WORD:
             return new BackCommand();
 
@@ -69,6 +72,9 @@ public class AddressBookParser {
 
         case EditTaskCommand.COMMAND_WORD:
             return new EditTaskParser().parse(arguments);
+
+        case MarkAttendanceCommand.COMMAND_WORD:
+            return new MarkAttendanceCommandParser().parse(arguments);
 
         case DeleteCommand.COMMAND_WORD:
             return new DeleteCommandParser().parse(arguments);
@@ -112,6 +118,9 @@ public class AddressBookParser {
         case BroadcastMailCommand.COMMAND_WORD:
             return new BroadcastMailCommandParser().parse(arguments);
 
+        case SendReminderCommand.COMMAND_WORD:
+            return new SendReminderCommandParser().parse(arguments);
+
         case SignInCommand.COMMAND_WORD:
             return new SignInCommandParser().parse(arguments);
 
@@ -126,6 +135,12 @@ public class AddressBookParser {
             
         case AddTimetableCommand.COMMAND_WORD:
             return new AddTimetableCommandParser().parse(arguments);
+
+        case DeleteProjectMeetingCommand.COMMAND_WORD:
+            return new DeleteProjectMeetingCommandParser().parse(arguments);
+
+        case ShowPerformanceOverviewCommand.COMMAND_WORD:
+            return new ShowPerformanceOverviewCommand();
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);

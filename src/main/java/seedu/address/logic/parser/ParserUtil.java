@@ -1,15 +1,5 @@
 package seedu.address.logic.parser;
 
-import static java.util.Objects.requireNonNull;
-import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-
-import java.math.BigDecimal;
-import java.time.DayOfWeek;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.*;
-
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.StringUtil;
@@ -29,8 +19,17 @@ import seedu.address.model.timetable.TimeRange;
 import java.util.List;
 import java.util.Date;
 import java.util.ArrayList;
-import seedu.address.model.timetable.TimeTable;
+import seedu.address.model.timetable.Timetable;
 
+import java.math.BigDecimal;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.*;
+
+import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.model.finance.Spending.DATE_FORMAT;
 
 /**
@@ -39,6 +38,7 @@ import static seedu.address.model.finance.Spending.DATE_FORMAT;
 public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
+    public static final String MESSAGE_INVALID_MULTIPLE_INDEX = "Index is not a non-zero unsigned integer at position: ";
 
     /**
      * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
@@ -51,6 +51,22 @@ public class ParserUtil {
             throw new ParseException(MESSAGE_INVALID_INDEX);
         }
         return Index.fromOneBased(Integer.parseInt(trimmedIndex));
+    }
+
+    public static List<Index> parseMultipleIndex(String oneBasedIndexes) throws ParseException {
+        String[] oneBasedIndexesArr = oneBasedIndexes.trim().split("\\s+");
+        List<Index> oneBasedIndexList = new ArrayList<>();
+        int indexCount = 1;
+
+        for (String oneBasedIndex : oneBasedIndexesArr) {
+            if (!StringUtil.isNonZeroUnsignedInteger(oneBasedIndex)) {
+                throw new ParseException(MESSAGE_INVALID_MULTIPLE_INDEX + indexCount);
+            }
+            oneBasedIndexList.add(Index.fromOneBased(Integer.parseInt(oneBasedIndex)));
+            indexCount++;
+        }
+
+        return oneBasedIndexList;
     }
 
     /**
@@ -85,12 +101,25 @@ public class ParserUtil {
 
     public static Time parseTime(String time) throws ParseException {
         requireNonNull(time);
-        String trimmedTime = time.trim();
-        if (!Time.isValidTime(trimmedTime)) {
+
+        String trimmedDateAndTime = time.trim();
+        if (trimmedDateAndTime.split(" ").length < 2 || time == null || time.equals("")) {
             throw new ParseException(Time.MESSAGE_CONSTRAINTS);
         }
+
+        String trimmedTime = time.trim().split(" ")[1];
+        String trimmedDate = time.trim().split(" ")[0];
+        if (!Time.isValidTimeAndDate(time.trim())) {
+            throw new ParseException(Time.MESSAGE_CONSTRAINTS);
+        }
+        if (!Time.isValidDate(trimmedDate)) {
+            throw new ParseException(Time.DATE_CONSTRAINTS);
+        }
+        if (!Time.isValidTime(trimmedTime)) {
+            throw new ParseException(Time.TIME_CONSTRAINTS);
+        }
         try {
-            return new Time(trimmedTime);
+            return new Time(time.trim());
         } catch (Exception e) {
             throw new ParseException(Time.MESSAGE_CONSTRAINTS);
         }
@@ -246,9 +275,12 @@ public class ParserUtil {
     }
 
     /**
-     *
+     * Parse newline separated TimeRanges, return their Timetable representation
+     * @param timeTableString Newline separated TimeRanges
+     * @return Timetable representation of the TimeRanges
+     * @throws ParseException
      */
-    public static TimeTable parseTimeTable(String timeTableString) throws ParseException {
+    public static Timetable parseTimeTable(String timeTableString) throws ParseException {
         String[] splitted = timeTableString.split("\n");
         List<TimeRange> timeRanges = new ArrayList<>();
         for (String s : splitted) {
@@ -258,7 +290,7 @@ public class ParserUtil {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, TimeRange.MESSAGE_CONSTRAINTS));
             }
         }
-        return new TimeTable(timeRanges);
+        return new Timetable(timeRanges);
     }
 
     /**

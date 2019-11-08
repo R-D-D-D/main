@@ -6,14 +6,14 @@ import seedu.address.model.Model;
 import seedu.address.model.finance.Budget;
 import seedu.address.model.finance.Finance;
 import seedu.address.model.project.Project;
-import static seedu.address.commons.core.Messages.MESSAGE_NOT_CHECKED_OUT;
-import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PROJECTS;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.core.Messages.MESSAGE_NOT_CHECKED_OUT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_BUDGET;
+import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PROJECTS;
 
 /**
  * Adds a budget type to the project.
@@ -22,12 +22,12 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_BUDGET;
 public class AddBudgetCommand extends Command {
 
     private final List<Budget> budgets = new ArrayList<>();
-
     public static final String COMMAND_WORD = "addBudget";
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Add a budget type to the project"
             + "[" + PREFIX_BUDGET + "BUDGET]...\n"
-            + "Example: " + COMMAND_WORD
-            + PREFIX_BUDGET + " equipment $3000.00";
+            + "Example: " + COMMAND_WORD + " "
+            + PREFIX_BUDGET + "equipment 3000.00";
+
     public static final String MESSAGE_SUCCESS = "New budgets added";
 
     public AddBudgetCommand(List<Budget> bugets) {
@@ -50,7 +50,8 @@ public class AddBudgetCommand extends Command {
 
         Project editedProject = new Project(currWorkingProject.getTitle(), //title
                 currWorkingProject.getDescription(), currWorkingProject.getMemberNames(), //description + members
-                currWorkingProject.getTasks(), new Finance(currWorkingProject.getFinance().getBudgets())); //tasks and budget
+                currWorkingProject.getTasks(), new Finance(currWorkingProject.getFinance().getBudgets()), currWorkingProject.getGeneratedTimetable()); //tasks and budget
+        editedProject.getListOfMeeting().addAll(currWorkingProject.getListOfMeeting());
 
         model.setWorkingProject(editedProject);
         model.setProject(currWorkingProject, editedProject);

@@ -14,10 +14,13 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import seedu.address.model.finance.Budget;
+import seedu.address.model.project.Meeting;
 import seedu.address.model.project.Project;
 import seedu.address.model.project.Task;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -53,6 +56,8 @@ public class ProjectOverview extends UiPart<Region> {
     @FXML
     private FlowPane tasks;
     @FXML
+    private Label meetingTitle;
+    @FXML
     private FlowPane meetings;
     @FXML
     private VBox wrapper;
@@ -61,28 +66,39 @@ public class ProjectOverview extends UiPart<Region> {
         super(FXML);
         this.projects = projects;
         this.project = projects.filtered(x -> x.getTitle() == project.getTitle()).get(0);
-        int count = 0;
+        int memberCount = 0;
+        int taskCount = 0;
+        int meetingCount = 0;
 
         cardPane.setFitToWidth(true);
         title.setText(project.getTitle().title);
         description.setText(project.getDescription().description);
-        memberTitle.setText("Members:");
-        project.getMemberNames().forEach(member -> members.getChildren().add(new Label(member)));
+
+        memberTitle.setText("Members: ");
+        members.setOrientation(Orientation.VERTICAL);
+        members.setPrefWrapLength(100);
+
+        for (String member : project.getMemberNames()) {
+            members.getChildren().add(new Label("    " + ++memberCount + ". " + member));
+        }
 
         for (Task task : project.getTasks()) {
-            tasks.getChildren().add(new Label("    " + ++count + ". " + task.toString()));
+            tasks.getChildren().add(new Label("    " + ++taskCount + ". " + task.toString()));
         }
+
         taskTitle.setText("Tasks: ");
         tasks.setOrientation(Orientation.VERTICAL);
         tasks.setPrefWrapLength(100);
-        project.getListOfMeeting().stream()
-                .sorted(Comparator.comparing(m -> m.getTime().getDate()))
-                .forEach(meeting -> meetings.getChildren().add(new Label(meeting.getDescription().description + " " + meeting.getTime().time)));
+
+        meetingTitle.setText("Meetings: ");
+        displayMeeting(meetings, this.project);
+
         //Defining the x axis
         CategoryAxis xAxis = new CategoryAxis();
 
-        xAxis.setCategories(FXCollections.observableArrayList(project.getFinance().getBudgetObservableList().stream().map(x -> x.getName()).collect(Collectors.toList())));
-        xAxis.setLabel("budgets");
+        xAxis.setCategories(FXCollections.observableArrayList(project.getFinance().getBudgetObservableList().stream()
+                .map(x -> x.getName()).collect(Collectors.toList())));
+        xAxis.setLabel("Budgets");
 
         //Defining the y axis
         NumberAxis yAxis = new NumberAxis();
@@ -108,6 +124,17 @@ public class ProjectOverview extends UiPart<Region> {
 
         //Add the chart to the HBox
         wrapper.getChildren().add(stackedBarChart);
+    }
+
+    public void displayMeeting(FlowPane meetings, Project project) {
+        meetings.setOrientation(Orientation.VERTICAL);
+        meetings.setPrefWrapLength(100);
+        List<Meeting> listOfMeetings = new ArrayList<Meeting>(project.getListOfMeeting());
+        int meetingCount = 1;
+        listOfMeetings.sort(Comparator.comparing(m -> m.getTime().getDate()));
+        for (Meeting meeting: listOfMeetings) {
+            meetings.getChildren().add(new Label("    " + meetingCount++ + ". " + meeting.getDescription().description + " on " + meeting.getTime().time));
+        }
     }
 
     @Override
