@@ -31,11 +31,15 @@
             </padding>
         </Label>
         <FlowPane fx:id="members"/>
-        <Label fx:id="taskTitle" styleClass="cell_big_label" text="\$taskTitle"/>
+        <Label fx:id="taskTitle" styleClass="cell_big_label" text="\$taskTitle">
+            <padding>
+                <Insets top="5.0"/>
+            </padding>
+        </Label>
         <FlowPane fx:id="tasks"/>
         <HBox>
             <Label styleClass="cell_big_label" text="Finance"/>
-            <VBox id="bar-chart" fx:id="wrapper" VBox.vgrow="ALWAYS">
+            <VBox id="bar-chart" fx:id="wrapper">
 
             </VBox>
         </HBox>
