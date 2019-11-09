@@ -18,7 +18,6 @@ import seedu.address.model.tag.Tag;
 import seedu.address.model.timetable.TimeRange;
 
 import java.util.List;
-import java.util.Date;
 import java.util.ArrayList;
 import seedu.address.model.timetable.Timetable;
 

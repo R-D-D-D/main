@@ -5,7 +5,6 @@ import seedu.address.model.util.SortingOrder;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;

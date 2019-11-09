@@ -5,9 +5,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_EXPENSE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DESCRIPTION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TIME;
 
-
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.stream.Stream;
 
 import seedu.address.commons.core.index.Index;

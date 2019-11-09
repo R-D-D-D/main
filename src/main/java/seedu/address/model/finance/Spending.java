@@ -4,11 +4,6 @@ import seedu.address.model.project.Time;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.util.Date;
-import java.text.SimpleDateFormat;
 import java.util.Objects;
 
 public class Spending {
