@@ -63,8 +63,7 @@ public class SendReminderCommand extends Command {
         Project project = model.getWorkingProject().get();
 
         //getting list of meetings and tasks
-        Set<Meeting> meetingSet = project.getListOfMeeting();
-        List<Meeting> meetingList = new ArrayList<>(meetingSet);
+        List<Meeting> meetingList = project.getListOfMeeting();
         List<Task> taskList = project.getTasks();
 
         //obtaining List<Person> recipientsList from List<String> that is in the project and model.getMembers()
@@ -88,26 +87,24 @@ public class SendReminderCommand extends Command {
         String taskReminder = "Please take note that the following task(s) is due in " + durationDays + " days:\n";
 
         Collections.sort(meetingList, Comparator.comparing(m -> m.getTime().getDate()));
+        int i = 1;
         for (Meeting meeting: meetingList) {
-            Date d = meeting.getTime().getDate();
-            long startTime = date.getTime();
-            long endTime = d.getTime();
-            long diffTime = endTime - startTime;
-            long diffDays = diffTime / (1000 * 60 * 60 * 24);
+            Date meetingDate = meeting.getTime().getDate();
+            long diffDays = findDifferenceInDays(date, meetingDate);
             if (diffDays <= this.durationDays) {
-                meetingsReminder = meetingsReminder + "-  " + meeting.toString() + "\n";
+                meetingsReminder = meetingsReminder + i + ".  " + meeting.toString() + "\n";
             }
+            i++;
         }
 
+        int j = 1;
         for (Task task: taskList) {
-            Date d = task.getTime().getDate();
-            long startTime = date.getTime();
-            long endTime = d.getTime();
-            long diffTime = endTime - startTime;
-            long diffDays = diffTime / (1000 * 60 * 60 * 24);
+            Date meetingDate = task.getTime().getDate();
+            long diffDays = findDifferenceInDays(date, meetingDate);
             if (diffDays <= this.durationDays) {
-                taskReminder = taskReminder + "-  " + task.toString() + "\n";
+                taskReminder = taskReminder + j + ".  " + task.toString() + "\n";
             }
+            j++;
         }
 
         String message = meetingsReminder + "\n" + taskReminder;
@@ -126,5 +123,13 @@ public class SendReminderCommand extends Command {
         }
 
         return new CommandResult(String.format(MESSAGE_SUCCESS), COMMAND_WORD);
+    }
+
+    public long findDifferenceInDays(Date start, Date end) {
+        long startTime = start.getTime();
+        long endTime = end.getTime();
+        long diffTime = endTime - startTime;
+        long diffDays = diffTime / (1000 * 60 * 60 * 24);
+        return diffDays;
     }
 }
