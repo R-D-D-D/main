@@ -13,7 +13,9 @@ import java.util.stream.Stream;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.AddSpendingCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.finance.Money;
 import seedu.address.model.finance.Spending;
+import seedu.address.model.project.Time;
 
 
 /**
@@ -43,10 +45,10 @@ public class AddSpendingCommandParser implements Parser<AddSpendingCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddSpendingCommand.MESSAGE_USAGE), pe);
         }
 
-        Date date = ParserUtil.parseDate(argMultimap.getValue(PREFIX_TIME).get());
-        BigDecimal spending = ParserUtil.parseSpending(argMultimap.getValue(PREFIX_EXPENSE).get());
+        Time time = ParserUtil.parseTime(argMultimap.getValue(PREFIX_TIME).get());
+        Money spending = ParserUtil.parseMoney(argMultimap.getValue(PREFIX_EXPENSE).get());
         String description = ParserUtil.parseDescription(argMultimap.getValue(PREFIX_DESCRIPTION).get()).toString();
-        Spending expense = new Spending(spending, date, description);
+        Spending expense = new Spending(spending, time, description);
 
         return new AddSpendingCommand(index, expense);
     }
