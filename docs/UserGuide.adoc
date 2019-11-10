@@ -217,6 +217,7 @@ Example:
 Whenever you add a time with the prefix c/, the format should be dd/MM/yyyy HHmm e.g
 10/12/2019 1600. MyProject will inform you if you attempt to add invalid days such as 30th February.
 
+// tag::addProjectMeeting[]
 ==== Add a project meeting: `addProjectMeeting` [Checkout]
 
 Adds a new project meeting to the current working project.  +
@@ -225,6 +226,8 @@ Format: `Format: addProjectMeeting [c/ dd/MM/yyyy HHmm] [s/MEETING_DESCRIPTION]`
 Example:
 
 * `addProjectMeeting c/29/09/2019 1900 s/milestone discussion`
+
+// end::addProjectMeeting[]
 
 ==== Add a budget [Checkout]
 Add multiple budgets available to the current project. +
@@ -304,15 +307,6 @@ Deletes the 2nd person in the address book.
 `delete 1` +
 Deletes the 1st person in the results of the `find` command.
 
-==== Clear the address book: `clear`
-
-Removes all persons from your address book.
-
-[CAUTION]
-This command removes ALL persons from your address book so use it with caution!
-
-Format: `clear`
-
 ==== Remove a member: `removeMember` [Checkout]
 
 
@@ -338,7 +332,7 @@ Example:
 
 * `deleteTask 1`
 
-
+// tag::deleteMeeting[]
 ==== Delete a meeting: `deleteMeeting` [Checkout]
 
 
@@ -350,6 +344,7 @@ Format: `deleteMeeting INDEX`
 Example:
 
 * `deleteMeeting 1`
+// end::deleteMeeting[]
 
 === Listing Information
 
@@ -437,8 +432,10 @@ image::generate/generate-alt.png[]
 Tired of switching between applications? We got you covered, below you will find some commands which support sending
 emails right here within the application.
 
-Do keep in mind that only the user Account in our current version is only compatible with Gmail Account and please ensure that the Access to less secure app in the security setting is enabled before signing in! 
+[NOTE]
+Do keep in mind that only the user Account in our current version is only compatible with Gmail Account and please ensure that the Access to less secure app in the security setting is enabled before signing in!
 
+// tag::email[]
 ==== Sign in to your account: `signIn`
 Signs in to the your email account. +
 Format: `signIn ac/ACCOUNT_EMAIL_ADDRESS pa/PASSWORD`
@@ -448,7 +445,8 @@ Example:
 * `signIn ac/example@gmail.com pa/12345678`
 
 [NOTE]
-This command is required to be executed before the remainder of the email commands can be executed.
+This command is required to be executed before the remainder of the email commands can be executed. +
+The correctness of the email address used and the password will be checked.
 
 ==== Log out from your account: `logOut`
 Logs out from your email account. +
@@ -466,6 +464,9 @@ Example:
 
 * `sendMail r/example@gmail.com su/Test me/HelloWorld!`
 
+[NOTE]
+We will not check the correctness of the member's email address
+
 ==== Broadcast an email: `broadcastMail` [Checkout]
 
 Sends an email to all members in the current working project. +
@@ -474,6 +475,9 @@ Format: `broadcastMail su/SUBJECT me/MESSAGE_BODY`
 Example:
 
 * `broadcastMail su/CS2103T me/added new Task`
+
+[NOTE]
+We will not check the correctness of the members' email address
 
 ==== Send reminder: `sendReminder` [Checkout]
 
@@ -486,10 +490,16 @@ Example:
 
 * `sendReminder d/3`
 
+[NOTE]
+We will not check the correctness of the members' email address
+
+// end::email[]
+
 === Sorting
 
 The following section provides a set of commands which help with sorting the information inside the
-application.
+application. MyProject makes it very easy and user-friendly by making all sort commands follow the same
+format and index/order pairing as shown below!
 
 ****
 All commands in this section follow this set of index/order pairing, where applicable:
@@ -500,6 +510,10 @@ All commands in this section follow this set of index/order pairing, where appli
 . Whether tasks are done and then by increasing order of time
 . Increasing price
 ****
+
+[NOTE]
+The default sorting order for the following lists is by increasing order of time(index 2). Whenever MyProject
+is closed, the ordering will return to the default order.
 
 ==== Sort tasks: `sortTask` [Checkout]
 
@@ -513,9 +527,8 @@ Example:
 
 Let's say you have added many different tasks with different deadlines and progresses into MyProject. +
 
-The default sorting order that MyProject
-offers is by increasing order of date(index 2). However you wish to group those tasks that are done in one group and those not done in another group and
-then further sort each group by increasing order of date(index 4) to track the progress of your tasks. +
+The default sorting order that MyProject offers is by increasing order of time(index 2). However you wish to group those tasks that are done in one group and those not done in another group and
+then further sort each group by increasing order of time(index 4) to track the progress of your tasks. +
 
 Simply type in the command `sortTask 4` and all the tasks in the list will immediately be sorted accordingly. +
 
@@ -526,7 +539,7 @@ you wish to add or edit tasks! +
 Here is a step by step process on how to do this.
 
 . Firstly, since this command is labeled with [Checkout] at the start, ensure that you `checkout` to a project first.
-Notice how the tasks in the task list are currently at the default sorting order which is by increasing order of date.
+Notice how the tasks in the task list are currently at the default sorting order which is by increasing order of time.
 image:sortTask1.png[]
 
 . Next, enter the command `sortTask 4` into the command line and press enter. You can choose any index from 1-4 depending
@@ -547,10 +560,11 @@ image:sortTask4.png[]
 ==== Sort spending: `sortSpending` [Checkout]
 
 Sorts the spending in the budget list of the current working project based on given specification. The implementation is
-exactly the same as sortTask. Refer to the sortTask section for a more detailed explanation. +
+slightly different from sortTask. MyProject will not show you the list of spending immediately after entering
+the command `sortSpending`. Enter the command `listBudget` to view the newly sorted list of spending. +
 Format: `sortSpending INDEX`
 
-`INDEX` in this case refers to which type of sorting you want to do. In this case, only integers 1, 2 and 5 are applicable.(Refer to the highlighted section above)
+`INDEX` refers to which type of sorting you want to do. In this case, only integers 1, 2 and 5 are applicable.(Refer to the highlighted section above)
 
 Example:
 
@@ -561,7 +575,7 @@ Sorts the meetings in the meeting list of the current working project based on g
 exactly the same as sortTask. Refer to the sortTask section for a more detailed explanation. +
 Format: `sortMeeting INDEX`
 
-`INDEX` in this case refers to which type of sorting you want to do. In this case, only integers 1 and 2 are applicable.(Refer to the highlighted section above)
+`INDEX` refers to which type of sorting you want to do. In this case, only integers 1 and 2 are applicable.(Refer to the highlighted section above)
 
 Example:
 
