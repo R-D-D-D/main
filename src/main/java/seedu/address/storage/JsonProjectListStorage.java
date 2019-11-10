@@ -16,7 +16,6 @@ import seedu.address.commons.util.ExcelUtil;
 import seedu.address.commons.util.FileUtil;
 import seedu.address.commons.util.JsonUtil;
 import seedu.address.model.ReadOnlyProjectList;
-import seedu.address.model.project.Project;
 
 /**
  * A class to access ProjectList data stored as a json file on the hard disk.
