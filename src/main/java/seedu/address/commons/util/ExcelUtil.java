@@ -25,6 +25,9 @@ public class ExcelUtil {
 
             createHeaders(wb, sheet, budgets);
             fillInnerParts(wb, sheet, budgets);
+            for (int i = 0; i < budgets.size() * 3; i++) {
+                sheet.autoSizeColumn(i, true);
+            }
         }
         wb.write(out);
         out.close();
