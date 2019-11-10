@@ -12,9 +12,11 @@ import java.util.logging.Logger;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.exceptions.DataConversionException;
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.commons.util.ExcelUtil;
 import seedu.address.commons.util.FileUtil;
 import seedu.address.commons.util.JsonUtil;
 import seedu.address.model.ReadOnlyProjectList;
+import seedu.address.model.project.Project;
 
 /**
  * A class to access ProjectList data stored as a json file on the hard disk.
@@ -24,13 +26,19 @@ public class JsonProjectListStorage implements ProjectListStorage {
     private static final Logger logger = LogsCenter.getLogger(JsonProjectListStorage.class);
 
     private Path filePath;
+    private Path budgetsExcelFilePath;
 
-    public JsonProjectListStorage(Path filePath) {
+    public JsonProjectListStorage(Path filePath, Path excelFilePath) {
         this.filePath = filePath;
+        this.budgetsExcelFilePath = excelFilePath;
     }
 
     public Path getProjectListFilePath() {
         return filePath;
+    }
+
+    public Path getBudgetsExcelFilePath() {
+        return budgetsExcelFilePath;
     }
 
     @Override
@@ -77,6 +85,20 @@ public class JsonProjectListStorage implements ProjectListStorage {
 
         FileUtil.createIfMissing(filePath);
         JsonUtil.saveJsonFile(new JsonSerializableProjectList(projectList), filePath);
+    }
+
+    @Override
+    public void saveBudgetsToExcel(ReadOnlyProjectList projectList) throws IOException {
+        saveBudgetsToExcel(projectList, budgetsExcelFilePath);
+    }
+
+    @Override
+    public void saveBudgetsToExcel(ReadOnlyProjectList projectList, Path filePath) throws IOException {
+        requireNonNull(projectList);
+        requireNonNull(filePath);
+
+        FileUtil.createIfMissing(filePath);
+        ExcelUtil.writeBudgetsToFile(filePath, projectList);
     }
 
 }
