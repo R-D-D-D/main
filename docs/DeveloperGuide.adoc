@@ -12,7 +12,7 @@ ifdef::env-github[]
 :note-caption: :information_source:
 :warning-caption: :warning:
 endif::[]
-:repoURL: https://github.com/se-edu/addressbook-level3/tree/master
+:repoURL: https://github.com/AY1920S1-CS2103T-T17-1/main/tree/master
 
 By: `T17-1`      Since: `Oct 2019`      Licence: `MIT`
 
@@ -209,10 +209,10 @@ of strings representing their names, and similarly each `Person` stores the proj
 as a list of strings representing the project titles. Below you will find 2 diagrams which represents this relationship.
 
 .Class diagram of Project
-image::MemberClassDiagram1.png[]
+image::MemberClassDiagram1.png[picutre, 250]
 
 .Class diagram of a Person
-image::MemberClassDiagram2.png[]
+image::MemberClassDiagram2.png[picture, 250]
 
 [NOTE]
 Whenever member is mentioned it should be known that it is represented by a `Person`.
@@ -355,7 +355,7 @@ The following sequence diagram shows the process of sending reminder to the proj
 .Sequence Diagram for sendReminder
 image::SendReminderSequenceDiagram.png[]
 
-These are the stages shown in figure 13.
+These are the stages shown in figure 15.
 
 . Parses the input to obtain the duration.
 . Goes to `Model` to get the the Meetings and Tasks.
@@ -369,9 +369,10 @@ These are the stages shown in figure 13.
 .Activity Diagram for sendReminder
 image::SendReminderActivityDiagram.png[]
 
-The diagram above shows how `sendReminder` works. There are 2 possible error messages that can occur. Firstly,
+The diagram above shows how `sendReminder` works. There are 2 possible error messages for invalid input. Firstly,
 if the user inputs nothing as the duration and input cannot be empty error message is shown. Secondly,
-an error will be shown if the user non-numeric or negative or zero number as the duration of time.
+an error will be shown if the user non-numeric or negative or zero number as the duration of time. For a valid input,
+user will be required to checkout then signIn first before executing the command.
 
 
 ==== Design considerations
@@ -427,7 +428,8 @@ These are the stages shown in figure 15.
 .Activity Diagram for BroadcastMail
 image::BroadcastMailActivityDiagram.png[]
 
-The diagram above shows how `broadcastMail` works.
+The diagram above shows how `broadcastMail` works. When the command is executed, it will throw a CommandException if the user
+has not checked out or have not signed in. Otherwise, broadcast message will be executed normally.
 
 ==== Design considerations
 
@@ -468,7 +470,10 @@ These are the stages shown in figure 15.
 .Activity Diagram for SignIn
 image::SignInActivityDiagram.png[]
 
-The diagram above shows how `signIn` works.
+The diagram above shows how `signIn` works. The command will result in CommandException to be thrown if user has
+already signed in with a valid email address (gmail) and password. If the user has not signed in, it will result in CommandException if
+either the user's email address or password is incorrect or does not match. Otherwise, the command will be executed and
+the user's Account information will be stored.
 
 ==== Design considerations
 
@@ -489,13 +494,66 @@ check for the correctness of the password input.
 sent by the team leaders.
 ** Cons: Expose users' password when users are trying to sign in. Users will need to change the account
 security settings to let less secure app access the account. Compromises account security.
-* **Alternative 2:** Hardcode an account in the application that is responsible for all mailing command/
+* **Alternative 2:** Hardcode an account in the application that is responsible for all mailing command.
 ** Pros: Do not expose users' password and Users do not need to change their Account security settings to
 send the emails.
 ** Cons: Members(recipient) receiving email from the users' may not know the origin of the email.
 This may lead to confusion for the project's members.
 // end::signIn[]
 
+// tag::setTimetable[]
+
+=== Timetable input
+==== Description of Feature
+This feature is used to input timetable data, which would then be used in the `generate` command to find a suitable meeting timeslot.
+
+There are two ways to input member's timetable:
+
+. Member send a formatted text file to the team leader, which would then be parsed by the system. The file would be a list of newline separated time ranges
+. Member send their NUSMods timetable URL to the team leader, and the system would parse the URL and fetch timetable data using NUSMods API
+
+User command would be in the format: `setTimetable INDEX m/member [n/NUSMODS_URL] [f/FILEPATH]`
+
+The main logic is implemented within the `TimetableInput` class, which is invoked by the `SetTimetableCommand` class.
+
+==== Details
+
+Important functions in `TimetableInput`:
+
+* `TimetableInput#getTimetableFromNUSMods(Url url)` -- Parse URL and fetch timetable data using NUSMods API
+* `TimetableInput#getTimetableFromFile(String filepath)` -- Parse file to obtain timetable data
+
+Below is an overview of the classes related to time+table input:
+
+.Class diagram for timetable input feature
+image::set-timetable/SetTimetableClassDiagram.png[]
+
+`setTimetableCommand` accepts either a filepath or a URL, which is then supplied to `TimetableInput` to fetch the timetable data.
+
+Afterwards, the timetable is passed into `TimetableVisualization` to provide a visual representation of the set timetable. This visualization is then passed back as a `CommandResult` to be displayed to the user.
+
+The following sequence diagram illustrates what happens when the user issues the command `setTimetable` to add their timetable from a shared NUSMods timetable.
+
+.Timeline of entire process from user executing their command to getting the result back.
+image::set-timetable/SetTimetableSequenceDiagram.png[]
+
+
+==== Design Considerations
+
+===== Aspect: How to input timetable
+
+* **Alternative 1** (current choice): Input timetable by importing timetable from an already existing platform.
+** Pros: More practical and convenient for users to input, as opposed to manually typing in all the timetable for every single members.
+** Cons: Feature unreliable as it requires maintainance if the web API changes.
+* **Alternative 2:** Input all time ranges manually by user.
+** Pros: Very reliable due to lack of usage of online APIs.
+** Cons: Very impractical. Most users would not want to enter timetable data of all their members one by one, and would probably skip this feature.
+
+We realized that it is very impractical to expect users to input timetable manually all by themselves. No matter how unreliable the web API is, the feature would at least be useful to users. If users have to manually input all the data, we cannot realistically expect this feature to be useful at all.
+
+// end::setTimetable[]
+
+// tag::generate[]
 === Generate meeting timeslot
 ==== Description of Feature
 
@@ -578,53 +636,7 @@ image::GenerateSlotActivityDiagram.png[]
 
 We went with options 1 as there is no real difference in speed if the number of members is restricted to below 15 members, which many projects do not normally exceed. It is much easier to understand and maintain by other developers as well.
 
-=== Timetable input
-==== Description of Feature
-This feature is used to input timetable data, which would then be used in the `generate` command to find a suitable meeting timeslot.
-
-There are two ways to input member's timetable:
-
-. Member send a formatted text file to the team leader, which would then be parsed by the system. The file would be a list of newline separated time ranges
-. Member send their NUSMods timetable URL to the team leader, and the system would parse the URL and fetch timetable data using NUSMods API
-
-User command would be in the format: `setTimetable INDEX m/member [n/NUSMODS_URL] [f/FILEPATH]`
-
-The main logic is implemented within the `TimetableInput` class, which is invoked by the `SetTimetableCommand` class.
-
-==== Details
-
-Important functions in `TimetableInput`:
-
-* `TimetableInput#getTimetableFromNUSMods(Url url)` -- Parse URL and fetch timetable data using NUSMods API
-* `TimetableInput#getTimetableFromFile(String filepath)` -- Parse file to obtain timetable data
-
-Below is an overview of the classes related to time+table input:
-
-.Class diagram for timetable input feature
-image::set-timetable/SetTimetableClassDiagram.png[]
-
-`setTimetableCommand` accepts either a filepath or a URL, which is then supplied to `TimetableInput` to fetch the timetable data.
-
-Afterwards, the timetable is passed into `TimetableVisualization` to provide a visual representation of the set timetable. This visualization is then passed back as a `CommandResult` to be displayed to the user.
-
-The following sequence diagram illustrates what happens when the user issues the command `setTimetable` to add their timetable from a shared NUSMods timetable.
-
-.Timeline of entire process from user executing their command to getting the result back.
-image::set-timetable/SetTimetableSequenceDiagram.png[]
-
-
-==== Design Considerations
-
-===== Aspect: How to input timetable
-
-* **Alternative 1** (current choice): Input timetable by importing timetable from an already existing platform.
-** Pros: More practical and convenient for users to input, as opposed to manually typing in all the timetable for every single members.
-** Cons: Feature unreliable as it requires maintainance if the web API changes.
-* **Alternative 2:** Input all time ranges manually by user.
-** Pros: Very reliable due to lack of usage of online APIs.
-** Cons: Very impractical. Most users would not want to enter timetable data of all their members one by one, and would probably skip this feature.
-
-We realized that it is very impractical to expect users to input timetable manually all by themselves. No matter how unreliable the web API is, the feature would at least be useful to users. If users have to manually input all the data, we cannot realistically expect this feature to be useful at all.
+// end::generate[]
 
 === Logging
 
@@ -671,6 +683,10 @@ the crucial information the user wants to see.
 `Spending` class and the `Budget` class and they all require to
 check the validity of a given string to convert it to `BigDecimal`.
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/master
 [[Implementation-Checkout]]
 === Checkout
 This allows user to checkout to a project from a list of project to work on it.
@@ -696,6 +712,7 @@ This is done in the CommandResult class constructor. If a command
 word matches actions that is email related or help or exit,
 the flag will indicate that a change in UI is not needed.
 
+<<<<<<< HEAD
 Next, a class to represent the state of UI is needed to remember
 a history which is the `UiEvent` class.UiEvent is a class that represent
 a type of UiDisplay as an event. It stores the current state of the
@@ -703,6 +720,14 @@ application's UI and the current working project index if it exists.
 Whenever a command is executed, a new UiEvent will be generated and stored in history
 if this command lead to a state
 that is different from the current one.
+=======
+Next, a class to represent a state of UI is needed to remember
+a history which is the `UiEvent` class.UiEvent is a class that represent
+a type of UiDisplay as an event. It stores the current state of the
+application's UI and the current working project if it exists.
+Whenever a command is executed, only if this command lead to a state
+that is different from the current one a new UiEvent will be generated and stored in history.
+>>>>>>> upstream/master
 The `viewHistory` is stored in the `MainWindow` class as a stack of UiEvents
 and the class also maintains a currentStatePointer. When a `back` command
 is executed, it can check back on what is the previous state.
@@ -724,10 +749,14 @@ Step 2. The user executes `checkout 1` command to checkout to project 1 to work 
 During the execution of the `checkout` command, when commandresult is created,
 it detects that there is a need to change the Ui and the flag is made to true.
 In the `MainWindow`, since a change is needed, `MainWindow#changeUiDisplay` is called
+<<<<<<< HEAD
 to change the display to `PROJECT_OVERVIEW` which is found out using
 the `MainWindow#getState` method. It also set the `currentState` to be `PROJECT_OVERVIEW`.
 The UiEvent with the state of `PROJECT_LIST` and an empty index will be stored
 in the `viewHistory` stack.
+=======
+to change the display and set the `currentState` to be `PROJECT_OVERVIEW`.
+>>>>>>> upstream/master
 
 image::ChangeUiDisplayState1.png[]
 
@@ -784,7 +813,7 @@ of the person can only be calculated in `PerformanceOverview` with information f
 `PerformanceOverview` is a separate model we have implemented, which consolidates all the data from each `Person` involved
 in the specific project, as well as from the project itself. The following is a class diagram for `PerformanceOverview`.
 
-image::PerformanceOverviewClassDiagram.png[]
+image::PerformanceOverviewClassDiagram.png[picture,250]
 
 A typical `PerformanceOverview` is created using the following constructor:
 
@@ -830,7 +859,7 @@ Step 4. The `PerformanceOverview` is set in the `Model`, and displayed to the us
 The following activity diagram summarizes the general flow of the execution of the `showPerformanceOverview` command:
 
 .Activity diagram for `showPerformanceOverview`
-image::ShowPerformanceOverviewActivityDiagram.png[]
+image::ShowPerformanceOverviewActivityDiagram.png[picture, 400]
 
 As shown in the activity diagram, there are only 2 main flows during the execution of this command. If there are members
 in the project, the performance of the members can be calculated, and the performance overview will be displayed
@@ -1136,15 +1165,13 @@ These instructions only provide a starting point for testers to work on; testers
 
 .. Download the jar file and copy into an empty folder
 .. Double-click the jar file +
-   Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+   Expected: Shows the GUI with a set of sample projects. The window size may not be optimum.
 
 . Saving window preferences
 
 .. Resize the window to an optimum size. Move the window to a different location. Close the window.
 .. Re-launch the app by double-clicking the jar file. +
    Expected: The most recent window size and location is retained.
-
-_{ more test cases ... }_
 
 === Deleting a person
 
@@ -1158,7 +1185,61 @@ _{ more test cases ... }_
 .. Other incorrect delete commands to try: `delete`, `delete x` (where x is larger than the list size) _{give more}_ +
    Expected: Similar to previous.
 
-_{ more test cases ... }_
+=== Sending Reminders
+
+.. Prerequisites: Checkout to a project using the checkout command. Sign in using the Gmail Account using the signIn command.
+.. Command input: sendReminder d/0 +
+Expected output: no reminders are sent as the duration is 0, no meetings or tasks are due in 0 days.
+.. Command input: sendReminder d/-1 +
+Expected output: no reminders are sent as the duration cannot be a negative number.
+
+.. Other incorrect sendReminder commands to try: sendReminder d/hello (where duration is an alphabet), sendReminder d/0.9 (
+duration can only take numeric character whereas 0.9 contains "."), sendReminder d/ (duration cannot be empty)
+
+=== Broadcasting Email
+
+.. Prerequisites: Checkout to a project using the checkout command. Sign in using the Gmail Account using the signIn command.
+.. Command input: broadcastMail su/ me/ +
+Expected output: An email with empty Header and empty Message body will be sent to all members in the project.
+.. Command input: broadcastMail su/0.%$&89 me/lkjhsd +
+Expected output: An email with header "0.%$&89" and message body "lkjhsd" will be sent to all members in the project.
+
+.. There is no incorrect broadcastMail commands as the header and the message body can be anything that the user likes.
+
+=== Signing In
+
+.. Prerequisites: Enable access to less secure app in the Google Account security settings. Disable the two-step verification method in the
+Google Account security settings. Use google account email address.
+.. Command input: signIn ac/hello@yahoo.com pa/12345678 +
+Expected output: failed to sign in as the input would expect a gmail domain to be keyed in.
+.. Command input: signIn ac/hello hello pa/123213 +
+Expected output: failed to sign in as the email address keyed in is not in the correct email format.
+.. Command input signIn ac/ pa/
+Expected output: failed to sign in as an empty email address is not a valid format for an email address.
+.. Other incorrect commands for signIn: signIn ac/cs2103t17@gmail.com pa/ (failed to sign in as the
+password for the email address is wrong) signIn ac/111111 pa/111111 (failed to sign in
+due to invalid format for email address)
+
+=== Editing a task
+  
+  .. Prerequisities: Checkout to a project using the `checkout` command. Multiple tasks in the task list.
+  .. Test case: `editTask 1 d/` +
+     Expected: First task is marked as done(cross changes to a tick).
+  .. Test case: `editTask 2 s/Do parts of the parser` +
+     Expected: The description of the second task is edited. Since d/ is not included in the input, the task is unchecked.
+  .. Test case `editTask 3 d/` +
+     Expected: No task is edited. Error details shown in the status message.
+  .. Other incorrect editTask commands to try: `editTask x` (where x is negative or larger than the list size), `editTask c/1/1/2019 1500` (Wrong time format)
+
+=== Sorting a task
+.. Prerequisites: Checkout to a project using the `checkout` command. Multiple tasks in the task list sorted according to the default order of increasing time(index 2).
+.. Test case: `sortTask 4` +
+  Expected: Tasks will automatically be sorted by which tasks are done/not done and then by increasing order of time.
+.. Test: `sortTask 1`
+  Expected: Tasks will automatically be sorted by alphabetical.
+.. Test: `addTask c/05/05/2019 1200 s/Allocate roles
+  Expected: Task will be added to the first index as the list is sorted by alphabetical order and 'Allocate roles' has the highest priority.
+.. Incorrect sortTask commands to try: `sortTask x`(where x is not within the range mentioned which is between integers 1-4)
 
 === Saving data
 

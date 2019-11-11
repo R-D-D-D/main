@@ -1,4 +1,4 @@
-= MyProject
+= MyProject V1.4 - User Guide
 :site-section: UserGuide
 :toc:
 :toc-title:
@@ -12,11 +12,9 @@ ifdef::env-github[]
 :tip-caption: :bulb:
 :note-caption: :information_source:
 endif::[]
-:repoURL: https://ay1920s1-cs2103t-t17-1.github.io/main/
+:repoURL: https://github.com/AY1920S1-CS2103T-T17-1/main/tree/master
 
-By: `Team SE-EDU`      Since: `Aug 2019`      Licence: `MIT`
-
-Team: *T17-1*
+By: `T17-1`      Since: `Oct 2019`      Licence: `MIT`
 
 *Content*
 
@@ -37,7 +35,7 @@ Interested? Jump to the Section 2, “QuickStart” to get started. Enjoy!
 == Quick Start:
 
 . Ensure you have Java 11 or above installed in your Computer.
-. Download the latest myproject.jar https://github.com/AY1920S1-CS2103T-T17-1/main/releases[here].
+. Download the latest release https://github.com/AY1920S1-CS2103T-T17-1/main/releases[here].
 . Copy the file to the folder you want to use as the home folder for MyProject.
 . Type the command in the command box and press Enter to execute it. e.g. typing help and pressing Enter will open the help window.
 . Some example commands you can try:
@@ -45,10 +43,16 @@ Interested? Jump to the Section 2, “QuickStart” to get started. Enjoy!
 .. exit : exits the app
 . Refer to Section 3, “Features” for details of each command.
 
+[WARNING]
+Please do not modify the data file or corrupt it in any way. MyProject will not work as intended if you do!
+
 .The home page of MyProject listing all the projects you have
 image::home-page.png[]
 
 == Features
+
+[NOTE]
+Parameters enclosed in square brackets[] are optional.
 
 === Basic Commands
 Here are some basic commands to start and navigate around the app.
@@ -83,9 +87,6 @@ Example:
 
 . `checkout 1`
 . `back`
-
-[NOTE]
-This command is used to return to the project list page after checking out to a project.
 
 ==== Exiting the app: `exit`
 
@@ -152,12 +153,12 @@ one step process.
 After you press enter you will be able to see the member reflected in the project like this:
 
 .`AddMemberCommand` success project overview display
-image::ProjectOverviewAddMember.png[]
+image::ProjectOverviewAddMember.png[picture, 400]
 
 And you will also be able to see her in your contacts like this:
 
 .New Member displayed in your contacts as a new person added.
-image::PersonListAddMember.png[]
+image::PersonListAddMember.png[picture, 400]
 
 If you look closely at Figure 5. you will see that some of the information does not really seem right. That is because
 you have not input it yet, but don't worry you can always do that later with our `edit` command which you will further down
@@ -188,7 +189,7 @@ Step 1. Find the person you want to add, and take note of the index which the pe
 below, let's say you want to add 'Bernice Yu' into your project. Notice her index is 2.
 
 .Finding the person to add
-image::AddFromContactsFindPerson.png[]
+image::AddFromContactsFindPerson.png[picture, 400]
 
 Step 2. Type in the `addFomContacts` command with the index `2`
 
@@ -197,7 +198,7 @@ image::AddFromContactsCommandInput.png[]
 
 Step 3. Press enter and you're done! Refer to the picture below to see what your screen should look like.
 
-image::AddFromContactsCommandSuccess.png[]
+image::AddFromContactsCommandSuccess.png[picutre, 400]
 
 // end::addFromContacts[]
 
@@ -207,11 +208,17 @@ image::AddFromContactsCommandSuccess.png[]
 Need to keep track of your team members' schedule? Use this command to record down their timetable easily!
 
 [TIP]
-Timetable set can be used to generate avaiable meeting timeslots using the command `generate`
+Timetable set can be used to generate available meeting timeslots using the command `generate`
 
 Format:
 
 `setTimetable INDEX [n/NUSMODS_SHARE_URL] [f/FILEPATH_TO_TIMETABLE]`
+
+****
+* Assigns timetable to the person at the specified `INDEX`.
+* The index refers to the index number shown in the displayed person list using the command `list`.
+* The index *must be a positive integer* 1, 2, 3, ...
+****
 
 Example:
 
@@ -227,26 +234,31 @@ TUESDAY 1100 TUESDAY 1500
 * `setTimetable 2 n/https://nusmods.com/timetable/sem-1/share?CS2100=LAB:05,TUT:02,LEC:1&CS2101=&CS2103T=LEC:G13&CS2105=TUT:03,LEC:1&CS3241=TUT:05,LEC:1&CS3243=TUT:01,LEC:1&GEQ1000=TUT:D27` +
 Set timetable to the person with index 2 on the list of persons, by retrieving timetable data from NUSMods.
 
-Below is a step-by-step instruction to guide you through the process of setting a timetable to Alice, through the use of NUSMods:
+Below is a step-by-step instruction to guide you through the process of setting a timetable to Alex, through the use of NUSMods:
 
-* Step 1: Type `setTimetable`, followed by the index of the person you wish to set the timetable to, and the URL of the share link.
+* Step 1: Type `list` and enter to view the list of persons. Identify the index of the person you wish to set the timetable to.
 
-.User enters timetable of team member
+.List of person in the application
 image::set-timetable/set-timetable-step-1.png[]
 
-* Step 2: Press enter, and you would see the following message. You can even scroll down to view a simple visualization of the timetable set!
+* Step 2: Type `setTimetable`, followed by the index of the person you wish to set the timetable to, and the URL of the share link.
+
+.User enters timetable of team member
+image::set-timetable/set-timetable-step-2.png[]
+
+* Step 3: Press enter, and you would see the following message. You can even scroll down to view a simple visualization of the timetable set!
 
 .`setTimetable` command success
-image::set-timetable/set-timetable-step-2a.png[]
+image::set-timetable/set-timetable-step-3a.png[]
 
 .Visualization of timetable set
-image::set-timetable/set-timetable-step-2b.png[]
+image::set-timetable/set-timetable-step-3b.png[]
 
 [TIP]
 Even if you accidentally entered a wrong URL, MyProject would prompt you helpfully!
 
 .Error message when entered URL is invalid
-image::set-timetable/set-timetable-step-3.png[]
+image::set-timetable/set-timetable-step-3-error.png[]
 
 // end::setTimetable[]
 
@@ -267,7 +279,7 @@ Whenever you add a time with the prefix c/, the format should be dd/MM/yyyy HHmm
 ==== Add a project meeting: `addProjectMeeting` [Checkout]
 
 Adds a new project meeting to the current working project.  +
-Format: `Format: addProjectMeeting [c/ dd/MM/yyyy HHmm] [s/MEETING_DESCRIPTION]`
+Format: `Format: addProjectMeeting c/ dd/MM/yyyy HHmm s/MEETING_DESCRIPTION`
 
 `dd/MM/yyyy HHmm` refers to the date and time the meeting is to be held. +
 `MEETING_DESCRIPTION` refers to the purpose of the meeting.
@@ -278,7 +290,7 @@ by recording it down in the MyProject app.
 
 To add a project meeting:
 
-1. Type `addProjectMeeting c/19/11/2019 1300 s/DIscussion on version 2` and press enter to execute it.Note that
+1. Type `addProjectMeeting c/19/11/2019 1300 s/Discussion on version 2` and press enter to execute it.Note that
 this project meeting will be held after the 4th meeting on 16/11/2019 1700 and before the 5th meeting on 29/11/2019 1300.
 image:addProjectMeeting1.png[]
 
@@ -378,7 +390,7 @@ Step 1. Find the person you want to remove from the project. Let's say you want 
 she just dropped your module. Notice her index is at 1
 
 .Finding the person you want to remove
-image::RemoveMemberFindingPerson.png[]
+image::RemoveMemberFindingPerson.png[picture, 400]
 
 
 Step 2. Type in the `removeMember` command with the index of `1`
@@ -464,10 +476,12 @@ associated with this functionality.
 
 Need to decide on a meeting timing, but having trouble finding a time where all members are free? This command can help suggest meeting timings!
 
-* Prerequisite: Timetables have been assigned to the members with the command `setTimetable`
+* Prerequisite:
+** Members have been assigned to the project using `addFromContacts` or `addMember`
+** Timetables have been assigned to the members with the command `setTimetable`
 
 [NOTE]
-`generate` would not give an error if some members do not have timetable assigned to them. Ensure that you have done `setTimetable` for each of the members in the project before using `generate`.
+`generate` would *not* give an error if some members do not have timetable assigned to them. Ensure that you have done `setTimetable` for each of the members in the project before using `generate`.
 
 Format: `generate d/DURATION [r/TIMERANGE]`
 
@@ -505,7 +519,7 @@ Tired of switching between applications? We got you covered, below you will find
 emails right here within the application.
 
 [NOTE]
-Do keep in mind that only the user Account in our current version is only compatible with Gmail Account and please ensure that the Access to less secure app in the security setting is enabled before signing in!
+Do keep in mind that the user Account in our current version is only compatible with Gmail Account and please ensure that the Access to less secure app in the security setting is enabled before signing in!
 
 // tag::email[]
 ==== Sign in to your account: `signIn`
@@ -706,6 +720,7 @@ that you can record this information in MyProject!
 Let's say the organization gave you budgets on equipment and
 manpower, let's first add these budgets to the project.
 
+<<<<<<< HEAD
 Format: `addBudget [b/NAME_OF_BUDGET ex/AMOUNT_OF_BUDGET]`
 
 image::addBudget.png[addBudget,320,240]
@@ -721,6 +736,19 @@ image::projectOverview.png[Overview,320,240]
 
 Format: `addExpense [INDEX_OF_BUDGET] [s/DESCRIPTION] [ex/AMOUNT SPEND] [c/dd/MM/yyyy HHmm]`
 
+=======
+image::addBudget.png[]
+
+After adding the budgets, we will be able to see a summary of
+them at project overview. Currently it only shows the amount
+remaining which is the same as the amount you input just now
+because you haven't spent anything yet.
+
+image::projectOverview.png[]
+
+==== Add expense: `addExpense` [Checkout]
+
+>>>>>>> upstream/master
 One month later...
 
 Now you have gone through quite a few meetings with the planning
@@ -730,6 +758,7 @@ addExpense to add it under the budget. In order to do that, you
 need the index of the budgets which you may already forgot, but
 you may simply type listBudgets to view them again.
 
+<<<<<<< HEAD
 image::addExpense.png[addExpense,320,240]
 
 ==== List budgets: `listBudget` [Checkout]
@@ -749,11 +778,33 @@ will be available at the project overview with a stacked bar graph
 indicating the amount remaining and the amount spent.
 
 image::projectOverviewFinal.png[Overview,320,240]
+=======
+image::addExpense.png[]
+
+==== List budgets: `listBudget` [Checkout]
+
+Now, you are seeing the pie chart representation of the budgets.
+If you have already overshot the budget, the pie chart will show
+overshot instead of remaining to remind you!
+
+image::listBudget.png[]
+
+After all that have been done, a breakdown of the budget situation
+will be available at the project overview with stacked bar graph
+indicating the amount remaining and the amount spent.
+
+image::projectOverviewFinal.png[]
+>>>>>>> upstream/master
 
 ==== Excel sheet storage
 
 Keeping the planning committee updated regarding budget is always
+<<<<<<< HEAD
 a challenge isn't it? Fret not, MyProject is here to help! Every update on
+=======
+a challenge isn't it? Only the treasurer knows the stuff
+inside out? Fret not, MyProject is here to help! Every update on
+>>>>>>> upstream/master
 the budget information will be recorded in an excel sheet located
 in the budgets folder. It creates a sheet per project and display
 the budgets and expenses under the budget in a table form. You
@@ -790,24 +841,24 @@ Step 1. Find the task you want to assign and the members you want to assign the 
 indexes.
 
 .Finding the task to assign and the members to assign to
-image::AssignTaskFinding.png[]
+image::AssignTaskFinding.png[picutre,  400]
 
 Step 2. Type in the `assignTask` command along with the correct indexes.
 
 .Typing the `assignTask` command with the correct input
-image::AssignTaskCommandInput.png[]
+image::AssignTaskCommandInput.png[picutre, 400]
 
 Step 3. Press enter and you're done! You will now see the tasks reflected under the respective members in your contacts.
 
 You will see a success message:
 
 .`assignTask` command success message
-image::AssignTaskCommandMessageSuccess.png[]
+image::AssignTaskCommandMessageSuccess.png[picture, 400]
 
 And also see the task reflected under the members:
 
 .How the assigned task is shown
-image::PersonListAssignedTask.png[]
+image::PersonListAssignedTask.png[picture, 400]
 
 ==== Unassigning a task: `unassignTask`
 With the ability to assign task, naturally you should be able to unassign a task as well, and you can do that with this
@@ -832,19 +883,19 @@ Step 1. Identify the tasks you want to unassign and the person you want to unass
 of their indexes.
 
 .Finding the tasks to unassign, and the person to unassign the tasks from.
-image::UnassignTaskFinding.png[]
+image::UnassignTaskFinding.png[picutre, 400]
 
 Step 2. Type in the `unassignTask` command with the relevant inputs
 
 .`unassignTask` command input
-image::UnassignTaskCommandInput.png[]
+image::UnassignTaskCommandInput.png[picture, 400]
 
 Step 3. Press enter and you're done!
 
 You will see a success message:
 
 .`unassignTask` command success message
-image::UnassignTaskMessageSuccess.png[]
+image::UnassignTaskMessageSuccess.png[picture, 400]
 
 And you will no longer see the tasks reflected under the person.
 
@@ -869,12 +920,12 @@ To help you better understand how to use this command, here is a step-by-step gu
 Step 1. Identify the meeting you want to mark attendance for, and the members who were present.
 
 .Finding the meeting to mark attendance for and the members to mark attendance of
-image::MarkAttendanceFinding.png[]
+image::MarkAttendanceFinding.png[picture, 400]
 
 Step 2. Type in the `markAttendance` command with the relevant inputs.
 
 .`markAttendance` command input
-image::MarkAttendanceCommandInput.png[]
+image::MarkAttendanceCommandInput.png[picture,500]
 
 Step 3. Press enter and you're done!
 
@@ -886,7 +937,7 @@ image::MarkAttendanceMessageSuccess.png[]
 And the meeting will show up under the information of the person like this:
 
 .Showing attendance marked
-image::PersonListMarkAttendance.png[]
+image::PersonListMarkAttendance.png[picture, 400]
 
 ==== Viewing performance overview: `showPerformanceOverview`
 After assigning the tasks and marking the attendance of members, you can use this command to give you a comprehensive
@@ -920,6 +971,6 @@ image::MeetingRateTable.png[]
 
 * Lastly you can also view each member individually after scrolling through the tables:
 
-image::IndividualPerformances.png[]
+image::IndividualPerformances.png[performance, 300,400]
 
 // end::performanceTracking[]
