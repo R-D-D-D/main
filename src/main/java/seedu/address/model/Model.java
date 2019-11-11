@@ -2,6 +2,7 @@ package seedu.address.model;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
+import seedu.address.commons.core.index.Index;
 import seedu.address.model.finance.Budget;
 import seedu.address.model.performanceoverview.PerformanceOverview;
 import seedu.address.model.person.Person;
@@ -46,6 +47,11 @@ public interface Model {
      * Replaces user prefs data with the data in {@code userPrefs}.
      */
     void setUserPrefs(ReadOnlyUserPrefs userPrefs);
+
+    /**
+     * Deletes the budget in the current working project.
+     */
+    void deleteBudget(Budget target);
 
     /**
      * Returns the user prefs.
