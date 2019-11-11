@@ -1,17 +1,21 @@
 package seedu.address.model.util;
 
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.finance.Spending;
 import seedu.address.model.person.Person;
 import seedu.address.model.project.Meeting;
 import seedu.address.model.project.Task;
 
 import java.util.Comparator;
+import java.util.logging.Logger;
 
 /**
  * Container class to store the current and different types of sorting orders.
  */
 
 public class SortingOrder {
+
+    private static final Logger logger = LogsCenter.getLogger(SortingOrder.class);
 
     private static Comparator<Task> currentSortingOrderForTask = Comparator.comparing(task -> task.getTime().getDate());
     private static Comparator<String> currentSortingOrderForMember = (member1, member2) -> member1.compareToIgnoreCase(member2);
@@ -25,17 +29,20 @@ public class SortingOrder {
     public static void setCurrentTaskSortingOrderByAlphabeticalOrder() {
         currentSortingOrderForTask = (task1, task2) -> task1.getDescription().description
                 .compareToIgnoreCase(task2.getDescription().description);
-        taskCurrentIndex = 1;
+        setTaskCurrentIndex(1);
+        logger.info("tasks sorted by alphabetical order.");
     }
 
     public static void setCurrentTaskSortingOrderByDate() {
         currentSortingOrderForTask = Comparator.comparing(task -> task.getTime().getDate());
-        taskCurrentIndex = 2;
+        setTaskCurrentIndex(2);
+        logger.info("tasks sorted by increasing order of time.");
     }
 
     public static void setCurrentTaskSortingOrderByDone() {
         currentSortingOrderForTask = (task1, task2) -> Boolean.compare(task1.isDone(), task2.isDone());
-        taskCurrentIndex = 3;
+        setTaskCurrentIndex(3);
+        logger.info("tasks sorted by progress.");
     }
 
     public static void setCurrentTaskSortingOrderByDoneThenDate() {
@@ -46,32 +53,38 @@ public class SortingOrder {
                 return Boolean.compare(task1.isDone(), task2.isDone());
             }
         };
-        taskCurrentIndex = 4;
+        setTaskCurrentIndex(5);
+        logger.info("tasks sorted by progress and then increasing order of time.");
     }
 
     public static void setCurrentSpendingSortingOrderByAlphabeticalOrder() {
         currentSortingOrderForSpending = (spending1, spending2) -> spending1.getDescription().compareToIgnoreCase(spending2.getDescription());
-        spendingCurrentIndex = 1;
+        setSpendingCurrentIndex(1);
+        logger.info("spending sorted by alphabetical order.");
     }
 
     public static void setCurrentSpendingSortingOrderByDate() {
         currentSortingOrderForSpending = Comparator.comparing(spending -> spending.getTime().getDate());
-        spendingCurrentIndex = 2;
+        setSpendingCurrentIndex(2);
+        logger.info("spending sorted by increasing order of time.");
     }
 
     public static void setCurrentSpendingSortingOrderByExpense() {
         currentSortingOrderForSpending = Comparator.comparing(spending -> spending.getTime().getDate());
-        spendingCurrentIndex = 5;
+        setSpendingCurrentIndex(5);
+        logger.info("spending sorted by increasing prices.");
     }
 
     public static void setCurrentMeetingSortingOrderByAlphabeticalOrder() {
         currentSortingOrderForMeeting = (meeting1, meeting2) -> meeting1.getDescription().description.compareToIgnoreCase(meeting2.getDescription().description);
-        meetingCurrentIndex = 1;
+        setMeetingCurrentIndex(1);
+        logger.info("meeting sorted by alphabetical order.");
     }
 
     public static void setCurrentMeetingSortingOrderByDate() {
         currentSortingOrderForMeeting = Comparator.comparing(meeting -> meeting.getTime().getDate());
-        meetingCurrentIndex = 2;
+        setMeetingCurrentIndex(2);
+        logger.info("meeting sorted by increasing order of time.");
     }
 
     public static Comparator<Task> getCurrentSortingOrderForTask() {
@@ -104,5 +117,20 @@ public class SortingOrder {
 
     public static int getMeetingCurrentIndex() {
         return meetingCurrentIndex;
+    }
+
+    private static void setTaskCurrentIndex(int index) {
+        assert index <= 4 && index >= 1 : "incorrect sorting order";
+        taskCurrentIndex = index;
+    }
+
+    private static void setSpendingCurrentIndex(int index) {
+        assert index == 1 || index == 2 || index == 5 : "incorrect sorting order";
+        spendingCurrentIndex = index;
+    }
+
+    private static void setMeetingCurrentIndex(int index) {
+        assert index == 1 || index == 2 : "incorrect sorting order";
+        meetingCurrentIndex = index;
     }
 }

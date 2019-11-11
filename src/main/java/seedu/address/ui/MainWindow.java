@@ -296,6 +296,7 @@ public class MainWindow extends UiPart<Stage> {
         case PROJECT_OVERVIEW:
             projectOverview = new ProjectOverview(logic.getFilteredProjectList(), logic.getWorkingProject().get());
             projectListPanelPlaceholder.getChildren().setAll(projectOverview.getRoot());
+            logger.severe("???");
             currentState = nextState;
             break;
 
