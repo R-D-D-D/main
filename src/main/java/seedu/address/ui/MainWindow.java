@@ -254,10 +254,14 @@ public class MainWindow extends UiPart<Stage> {
             if (commandResult.changeNeeded()) {
                 State nextState = stateOf(commandWord);
                 if (logic.getWorkingProject().isEmpty()) {
-                    logic.addUiEvent(new UiEvent(nextState, Optional.empty()));
+                    if (!nextState.equals(currentState)) {
+                        logic.addUiEvent(new UiEvent(nextState, Optional.empty()));
+                    }
                 } else {
                     int projectIndex = logic.getFilteredProjectList().indexOf(logic.getWorkingProject().get());
-                    logic.addUiEvent(new UiEvent(nextState, Optional.of(projectIndex)));
+                    if (!nextState.equals(currentState)) {
+                        logic.addUiEvent(new UiEvent(nextState, Optional.of(projectIndex)));
+                    }
                 }
                 changeUiDisplay(nextState);
             } else {
@@ -292,7 +296,6 @@ public class MainWindow extends UiPart<Stage> {
         case PROJECT_OVERVIEW:
             projectOverview = new ProjectOverview(logic.getFilteredProjectList(), logic.getWorkingProject().get());
             projectListPanelPlaceholder.getChildren().setAll(projectOverview.getRoot());
-            logger.severe("???");
             currentState = nextState;
             break;
 
