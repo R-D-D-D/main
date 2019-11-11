@@ -11,7 +11,6 @@ import seedu.address.model.project.Meeting;
 import seedu.address.model.project.Project;
 import seedu.address.model.project.Task;
 import seedu.address.model.timetable.Timetable;
-import seedu.address.model.util.SortingOrder;
 
 import java.util.*;
 
