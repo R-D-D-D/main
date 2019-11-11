@@ -683,10 +683,6 @@ the crucial information the user wants to see.
 `Spending` class and the `Budget` class and they all require to
 check the validity of a given string to convert it to `BigDecimal`.
 
-<<<<<<< HEAD
-=======
-
->>>>>>> upstream/master
 [[Implementation-Checkout]]
 === Checkout
 This allows user to checkout to a project from a list of project to work on it.
@@ -712,7 +708,6 @@ This is done in the CommandResult class constructor. If a command
 word matches actions that is email related or help or exit,
 the flag will indicate that a change in UI is not needed.
 
-<<<<<<< HEAD
 Next, a class to represent the state of UI is needed to remember
 a history which is the `UiEvent` class.UiEvent is a class that represent
 a type of UiDisplay as an event. It stores the current state of the
@@ -720,14 +715,6 @@ application's UI and the current working project index if it exists.
 Whenever a command is executed, a new UiEvent will be generated and stored in history
 if this command lead to a state
 that is different from the current one.
-=======
-Next, a class to represent a state of UI is needed to remember
-a history which is the `UiEvent` class.UiEvent is a class that represent
-a type of UiDisplay as an event. It stores the current state of the
-application's UI and the current working project if it exists.
-Whenever a command is executed, only if this command lead to a state
-that is different from the current one a new UiEvent will be generated and stored in history.
->>>>>>> upstream/master
 The `viewHistory` is stored in the `MainWindow` class as a stack of UiEvents
 and the class also maintains a currentStatePointer. When a `back` command
 is executed, it can check back on what is the previous state.
@@ -749,14 +736,10 @@ Step 2. The user executes `checkout 1` command to checkout to project 1 to work 
 During the execution of the `checkout` command, when commandresult is created,
 it detects that there is a need to change the Ui and the flag is made to true.
 In the `MainWindow`, since a change is needed, `MainWindow#changeUiDisplay` is called
-<<<<<<< HEAD
 to change the display to `PROJECT_OVERVIEW` which is found out using
 the `MainWindow#getState` method. It also set the `currentState` to be `PROJECT_OVERVIEW`.
 The UiEvent with the state of `PROJECT_LIST` and an empty index will be stored
 in the `viewHistory` stack.
-=======
-to change the display and set the `currentState` to be `PROJECT_OVERVIEW`.
->>>>>>> upstream/master
 
 image::ChangeUiDisplayState1.png[]
 
